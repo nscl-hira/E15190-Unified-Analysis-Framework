@@ -37,6 +37,7 @@ int main (int argc, char ** argv)
   // Run by Run loop ////////////////////////
   for(int cur_run=first_run; cur_run<=last_run; cur_run++)
   {
+    dataChain->Reset();
     char file_evt[100];
     sprintf (file_evt,"CalibratedData_%04d*.root",cur_run);
     std::string file_evt_string(file_evt);
