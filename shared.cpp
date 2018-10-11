@@ -32,3 +32,4 @@ const int NUM_CSI_TEL =4;
 const int NUM_CSI_STRIP=2;
 const int NUM_TOWERS = 3;
 const int NUM_MAX_PARTICLES_PER_TEL = 4;
+const int MAX_Z_IDENTIFIED_HIRA=10;

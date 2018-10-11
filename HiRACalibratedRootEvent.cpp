@@ -29,8 +29,10 @@ fmulti(0)
   fMomentum=	       new  Double_t [num_max_particles];
   fTheta=	           new  Double_t [num_max_particles];
   fPhi= 	           new  Double_t [num_max_particles];
-  fZ=		             new  Int_t    [num_max_particles];
-  fA=		             new  Int_t    [num_max_particles];
+  fZ=		             new  Double_t [num_max_particles];
+  fA=		             new  Double_t [num_max_particles];
+  fZId=	             new  Int_t    [num_max_particles];
+  fAId=              new  Int_t    [num_max_particles];
   fIdCode=	         new  Int_t    [num_max_particles];
 }
 
@@ -63,8 +65,10 @@ fmulti(0)
   fMomentum=	       new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fTheta=	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fPhi= 	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fZ=		             new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
-  fA=		             new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
+  fZ=		             new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
+  fA=		             new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
+  fZId=	             new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
+  fAId=              new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
   fIdCode=	         new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
 }
 
@@ -96,6 +100,8 @@ HiRACalibratedData::~HiRACalibratedData()
   delete []  fMomentum;
   delete []  fTheta;
   delete []  fPhi;
+  delete []  fZId;
+  delete []  fAId;
   delete []  fZ;
   delete []  fA;
   delete []  fIdCode;

@@ -44,6 +44,7 @@ extern const int NUM_CSI_TEL;
 extern const int NUM_CSI_STRIP;
 extern const int NUM_TOWERS;
 extern const int NUM_MAX_PARTICLES_PER_TEL;
+extern const int MAX_Z_IDENTIFIED_HIRA;
 //===============================
 
 #endif

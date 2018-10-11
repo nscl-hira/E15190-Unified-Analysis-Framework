@@ -74,7 +74,7 @@ fHiRAGeometryTab(new HiRAGeometry(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
 fSiCalibrationTools(new HiRASiCalibration(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
 fCsICalibrationModule(new HiRACsICalibrationManager()),
 fHiRAStatus(new HiRADetectorStatus(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
-fHiRAIdentifiationModule(new HiRAIdentification()),
+fHiRAIdentifiationModule(new HiRAIdentification(NUM_TEL,NUM_CSI_TEL)),
 fHiRAPixelizationModule(new HiRAPixelization(NUM_TEL))
 {
   //Parsing DataType string to allocate specific detectors

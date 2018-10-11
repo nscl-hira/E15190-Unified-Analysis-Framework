@@ -34,8 +34,10 @@ public:
   Double_t *fMomentum;         //[fmulti]
   Double_t *fTheta;            //[fmulti]
   Double_t *fPhi;              //[fmulti]
-  Int_t    *fZ;                //[fmulti]
-  Int_t    *fA;                //[fmulti]
+  Double_t *fZ;                //[fmulti]
+  Double_t *fA;                //[fmulti]
+  Int_t    *fZId;              //[fmulti]
+  Int_t    *fAId;              //[fmulti]
   Int_t    *fIdCode;           //[fmulti]
 
   HiRACalibratedData(int);
