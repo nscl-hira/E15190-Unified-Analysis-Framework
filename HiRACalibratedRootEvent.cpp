@@ -23,6 +23,7 @@ fmulti(0)
   fEnergySibCal=     new  Double_t [num_max_particles];
   fEnergycsiCal=     new  Double_t [num_max_particles];
   fEnergycsiCalProtons=     new  Double_t [num_max_particles];
+  fEnergycsiVolt=     new  Double_t [num_max_particles];
 
   fKinEnergy=	       new  Double_t [num_max_particles];
   fBeta=	           new  Double_t [num_max_particles];
@@ -59,6 +60,7 @@ fmulti(0)
   fEnergySibCal=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fEnergycsiCal=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fEnergycsiCalProtons=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
+  fEnergycsiVolt=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
 
   fKinEnergy=	       new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fBeta=	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
@@ -94,6 +96,7 @@ HiRACalibratedData::~HiRACalibratedData()
   delete []  fEnergySibCal;
   delete []  fEnergycsiCal;
   delete []  fEnergycsiCalProtons;
+  delete []  fEnergycsiVolt;
 
   delete []  fKinEnergy;
   delete []  fBeta;
@@ -130,7 +133,8 @@ fmulticsi(0)
   fnumcsi=           new  Int_t    [NUM_CSI_TEL];
   fEnergycsi=        new  UShort_t [NUM_CSI_TEL];
   fTimecsi=          new  Double_t [NUM_CSI_TEL];
-  fEnergycsiCal=     new  Double_t [NUM_CSI_TEL];
+  fEnergycsiCalProtons= new  Double_t [NUM_CSI_TEL];
+  fEnergycsiVolt=     new  Double_t [NUM_CSI_TEL];
 }
 
 //________________________________________________
@@ -140,10 +144,12 @@ HiRACalibratedBuffer::~HiRACalibratedBuffer()
   delete []  fEnergySifHi;
   delete []  fEnergySifLo;
   delete []  fTimeSif ;
+
   delete []  fnumstripb;
   delete []  fEnergySibHi;
   delete []  fEnergySibLo;
   delete []  fTimeSib;
+
   delete []  fnumcsi;
   delete []  fEnergycsi;
   delete []  fTimecsi;
@@ -152,5 +158,6 @@ HiRACalibratedBuffer::~HiRACalibratedBuffer()
   delete []  fEnergySibMatched;
   delete []  fEnergySifCal;
   delete []  fEnergySibCal;
-  delete []  fEnergycsiCal;
+  delete []  fEnergycsiCalProtons;
+  delete []  fEnergycsiVolt;
 }

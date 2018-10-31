@@ -159,7 +159,9 @@ void E15190Reader::BuildCalibratedEvent()
         fHiRACalibratedDataBuffer.fnumcsi[fHiRACalibratedDataBuffer.fmulticsi]=HiRA->fCsI.fnumcsi[j];
         fHiRACalibratedDataBuffer.fEnergycsi[fHiRACalibratedDataBuffer.fmulticsi]=HiRA->fCsI.fEnergy[j];
         fHiRACalibratedDataBuffer.fTimecsi[fHiRACalibratedDataBuffer.fmulticsi]=HiRA->fCsI.fTime[j];
-        fHiRACalibratedDataBuffer.fEnergycsiCal[fHiRACalibratedDataBuffer.fmulticsi]=GetCsIEMeV(HiRA->fCsI.fEnergy[j], i, HiRA->fCsI.fnumcsi[j]);
+        fHiRACalibratedDataBuffer.fEnergycsiCalProtons[fHiRACalibratedDataBuffer.fmulticsi]=GetCsIEMeV(HiRA->fCsI.fEnergy[j], i, HiRA->fCsI.fnumcsi[j]); //CsI Proton-equivalent Energy
+        fHiRACalibratedDataBuffer.fEnergycsiVolt[fHiRACalibratedDataBuffer.fmulticsi]=GetCsIVoltage(HiRA->fCsI.fEnergy[j], i, HiRA->fCsI.fnumcsi[j]); //CsI voltage from pulser calibration
+
         fHiRACalibratedDataBuffer.fmulticsi++;
       }
 
@@ -176,9 +178,8 @@ void E15190Reader::BuildCalibratedEvent()
     for(int i=0; i<fHiRACalibratedData.fmulti; i++) {
       fHiRACalibratedData.fTheta[i]=GetThetaPixel(fHiRACalibratedData.fnumtel[i], fHiRACalibratedData.fnumstripf[i], fHiRACalibratedData.fnumstripb[i]);
       fHiRACalibratedData.fPhi[i]=GetPhiPixel(fHiRACalibratedData.fnumtel[i], fHiRACalibratedData.fnumstripf[i], fHiRACalibratedData.fnumstripb[i]);
-      fHiRACalibratedData.fEnergycsiCal[i]=GetCsIEMeV(fHiRACalibratedData.fEnergycsi[i],fHiRACalibratedData.fnumtel[i],fHiRACalibratedData.fnumcsi[i],fHiRACalibratedData.fZ[i],fHiRACalibratedData.fA[i]);
-      fHiRACalibratedData.fEnergycsiCalProtons[i]=GetCsIEMeV(fHiRACalibratedData.fEnergycsi[i],fHiRACalibratedData.fnumtel[i],fHiRACalibratedData.fnumcsi[i], 1, 1);
-      fHiRACalibratedData.fKinEnergy[i]=fHiRACalibratedDataBuffer.fEnergySifMatched[i]+fHiRACalibratedData.fEnergycsiCal[i];
+      fHiRACalibratedData.fEnergycsiCal[i]=GetCsIEMeV(fHiRACalibratedData.fEnergycsi[i],fHiRACalibratedData.fnumtel[i],fHiRACalibratedData.fnumcsi[i],fHiRACalibratedData.fZ[i],fHiRACalibratedData.fA[i]); //Energy in the CsI
+      fHiRACalibratedData.fKinEnergy[i]=fHiRACalibratedDataBuffer.fEnergySifMatched[i]+fHiRACalibratedData.fEnergycsiCal[i]; //Total kinetic energy as the sum of DE (front) and E
       fHiRACalibratedData.fBeta[i]=-9999;
       fHiRACalibratedData.fMomentum[i]=-9999;
     }

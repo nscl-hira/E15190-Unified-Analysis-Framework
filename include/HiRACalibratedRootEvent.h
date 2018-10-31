@@ -27,7 +27,8 @@ public:
   Double_t *fEnergySifCal;     //[fmulti]
   Double_t *fEnergySibCal;     //[fmulti]
   Double_t *fEnergycsiCal;     //[fmulti]
-  Double_t *fEnergycsiCalProtons;     //[fmulti]
+  Double_t *fEnergycsiCalProtons; //[fmulti]
+  Double_t *fEnergycsiVolt;     //[fmulti]
 
   Double_t *fKinEnergy;        //[fmulti]
   Double_t *fBeta;             //[fmulti]
@@ -59,18 +60,19 @@ public:
   Double_t *fEnergySifCal;     //[fmultistripf]
 
   Int_t    fmultistripb;
-  Int_t    *fnumstripb;    //[fmultistripf]
-  UShort_t *fEnergySibHi;  //[fmultistripf]
-  UShort_t *fEnergySibLo;  //[fmultistripf]
-  UShort_t *fTimeSib;      //[fmultistripf]
-  Double_t *fEnergySibMatched; //[fmultistripf]
-  Double_t *fEnergySibCal;     //[fmultistripf]
+  Int_t    *fnumstripb;    //[fmultistripb]
+  UShort_t *fEnergySibHi;  //[fmultistripb]
+  UShort_t *fEnergySibLo;  //[fmultistripb]
+  UShort_t *fTimeSib;      //[fmultistripb]
+  Double_t *fEnergySibMatched; //[fmultistripb]
+  Double_t *fEnergySibCal;     //[fmultistripb]
 
   Int_t    fmulticsi;
-  Int_t    *fnumcsi;       //[fmultistripf]
-  UShort_t *fEnergycsi;    //[fmultistripf]
-  Double_t *fTimecsi;      //[fmultistripf]
-  Double_t *fEnergycsiCal;     //[fmultistripf]
+  Int_t    *fnumcsi;       //[fmulticsi]
+  UShort_t *fEnergycsi;    //[fmulticsi]
+  Double_t *fTimecsi;      //[fmulticsi]
+  Double_t *fEnergycsiCalProtons;  //[fmulticsi]
+  Double_t *fEnergycsiVolt;     //[fmulticsi]
 
   HiRACalibratedBuffer();
   virtual ~HiRACalibratedBuffer();

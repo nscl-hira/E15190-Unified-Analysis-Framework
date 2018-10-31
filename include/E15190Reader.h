@@ -168,11 +168,10 @@ public :
   double GetSibIntercept(int telescope, int numstrip) const;
   double GetSifSlope(int telescope, int numstrip) const;
   double GetSibSlope(int telescope, int numstrip) const;
-  double GetCsIIntercept(int telescope, int numcsi) const;
-  double GetCsISlope(int telescope, int numcsi) const;
   double GetSifHiLowMatched(int chHi, int chLow, int telescope, int numstrip) const;
   double GetSibHiLowMatched(int chHi, int chLow, int telescope, int numstrip) const;
-  double GetCsIEMeV(int ch, int telescope, int numcsi, int Z=1, int A=1) const;
+  double GetCsIEMeV(double ch, int telescope, int numcsi, int Z=1, int A=1) const;
+  double GetCsIVoltage(double ch, int telescope, int numcsi) const;
   double GetSifEMeV(int ch, int telescope, int numstripf) const;
   double GetSibEMeV(int ch, int telescope, int numstripb) const;
   double GetSifHiLowMatchedEMeV(int chHi, int chLow, int telescope, int numstrip) const;

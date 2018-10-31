@@ -1048,9 +1048,15 @@ double E15190Reader::GetSibHiLowMatchedEMeV(int chHi, int chLow, int telescope, 
 }
 
 //____________________________________________________
-double E15190Reader::GetCsIEMeV(int ch, int telescope, int numcsi, int Z, int A) const
+double E15190Reader::GetCsIEMeV(double ch, int telescope, int numcsi, int Z, int A) const
 {
   return Z>0&&A>0&&fHiRACsICalibrated&&fHiRACsIPulserCalibrated ? fCsICalibrationModule->GetEnergyValue(gRandom->Uniform(ch-0.5,ch+0.5), telescope, numcsi, Z, A) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetCsIVoltage(double ch, int telescope, int numcsi) const
+{
+  return fHiRACsIPulserCalibrated ? fCsICalibrationModule->GetVoltageValue(gRandom->Uniform(ch-0.5,ch+0.5), telescope, numcsi) : -9999;
 }
 
 //____________________________________________________

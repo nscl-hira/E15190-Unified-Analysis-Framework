@@ -55,7 +55,7 @@ int HiRAPixelization::Pixelization(int ntel, HiRACalibratedBuffer * pEvent, HiRA
    {
      if(pEvent->fEnergycsi[i] == 4096) continue;
      if(pEvent->fEnergycsi[i] > 0) {
-       fpixel[ntel]->Csi->Add(i, pEvent->fnumcsi[i],pEvent->fEnergycsiCal[i],0.,pEvent->fEnergycsi[i],pEvent->fTimecsi[i]);
+       fpixel[ntel]->Csi->Add(i, pEvent->fnumcsi[i],pEvent->fEnergycsiCalProtons[i],0.,pEvent->fEnergycsi[i],pEvent->fTimecsi[i]);
      }
    }
 
@@ -103,7 +103,8 @@ int HiRAPixelization::Pixelization(int ntel, HiRACalibratedBuffer * pEvent, HiRA
      pCalibratedEvent->fEnergySibCal[pCalibratedEvent->fmulti]=pEvent->fEnergySibCal[fpixel[ntel]->fstripbindex[i]];
      pCalibratedEvent->fnumcsi[pCalibratedEvent->fmulti]=pEvent->fnumcsi[fpixel[ntel]->fcsiindex[i]];
      pCalibratedEvent->fEnergycsi[pCalibratedEvent->fmulti]=pEvent->fEnergycsi[fpixel[ntel]->fcsiindex[i]];
-     pCalibratedEvent->fEnergycsiCal[pCalibratedEvent->fmulti]=pEvent->fEnergycsiCal[fpixel[ntel]->fcsiindex[i]]; //CsI energy is here still the one for protons, that will be used for PID
+     pCalibratedEvent->fEnergycsiCalProtons[pCalibratedEvent->fmulti]=pEvent->fEnergycsiCalProtons[fpixel[ntel]->fcsiindex[i]]; //Proton equivalent CsI energy
+     pCalibratedEvent->fEnergycsiVolt[pCalibratedEvent->fmulti]=pEvent->fEnergycsiVolt[fpixel[ntel]->fcsiindex[i]];
      pCalibratedEvent->fTimecsi[pCalibratedEvent->fmulti]=pEvent->fTimecsi[fpixel[ntel]->fcsiindex[i]];
      pCalibratedEvent->fmulti++;
    }
