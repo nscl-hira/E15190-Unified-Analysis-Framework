@@ -42,8 +42,8 @@ int NWPulseHeightCalibration::LoadMatching(const char * file_name)
     std::string LineRead;
     std::getline(FileIn, LineRead);
 
-    if(LineRead.empty()) continue;
     LineRead.assign(LineRead.substr(0,LineRead.find('*')));
+    if(LineRead.empty()) continue;
     if(LineRead.find_first_not_of(' ') == std::string::npos) continue;
 
     std::istringstream LineStream(LineRead);
@@ -79,8 +79,8 @@ int NWPulseHeightCalibration::LoadPulseHeightCalibration(const char * file_name)
     std::string LineRead;
     std::getline(FileIn, LineRead);
 
-    if(LineRead.empty()) continue;
     LineRead.assign(LineRead.substr(0,LineRead.find('*')));
+    if(LineRead.empty()) continue;
     if(LineRead.find_first_not_of(' ') == std::string::npos) continue;
 
     std::istringstream LineStream(LineRead);

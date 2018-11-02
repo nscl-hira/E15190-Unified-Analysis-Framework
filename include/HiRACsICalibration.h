@@ -8,6 +8,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <stdio.h>
 #include <TCanvas.h>
 #include <TF1.h>
@@ -15,49 +16,60 @@
 #include <math.h>
 #include <cmath>
 
-#include "EnergyLossModule.h"
-#include "nuclear_masses.h"
+#include <shared.h>
 
-// ASSUMPTIONS
-static const int CSICALIB_NUM_TEL = 12;
-static const int CSICALIB_NUM_CSI_TEL =4;
-static const int CSICALIB_NUM_TOWER = 3;
+/* HiRACsICalibration class
+ * created by Daniele Dell'Aquila
+ * v1.0 - April 2018
+ * v2.0 - Nov 1st 2018
+ *  Improved to handle the most recent calibration with an arbitrary formula for each isotope
+ *  Since the calibrations are given in E -> Light a new method for fast inverse function is
+ *  implemented to rapidly convert a light output into energy Light -> E
+ *  The latter process is handled by the class TF1Fast
+ */
 
-// NUMBER OF MODELS FOR ENERGY LOSS CALCULATIONS
-static const int NUM_MODELS_ELOSS=6;
+ /* HiRACsICalibratioNManager class
+  * created by Daniele Dell'Aquila
+  * v1.0 - April 2018
+  * v2.0 - Nov 1st 2018
+  *  This class handles HiRA CsI calibrations for all isotopes and all crystals
+  *
+  */
 
 // MAX Z DETECTED
-static const int Z_MAX=20;
+const int Z_MAX=20;
 // MAX A DETECTED
-static const int A_MAX=20;
+const int A_MAX=20;
+// NUMBER OF CRYSTALS SUBJECT TO CALIBRATION
+const int NUM_CRYSTALS=48;
 
-//CSI_CRYSTAL_LENGTH (um)
-static const double CsILength=1E5;
-//===============================
-
-class HiRACsISimulation
+class TF1Fast
 {
 public :
-  HiRACsISimulation();
-  ~HiRACsISimulation();
+  TF1Fast(double precision=0.2);
+  TF1Fast(const char * name, const char * formula, double xmin, double max, double precision=0.2);
+  ~TF1Fast();
 
-  double GetSimulatedLightFromEnergy(int Z, int A, double Einc, TF1 * LightResponse, double CsIthickness_um, int model=1);
+  void InitInverseFunction();
+
+  double Eval(double);
+  double EvalInverse(double);
+  TF1 * GetFunction();
+
+  void SetFunction(TF1 *);
+  void SetParameters(double *);
+  void SetParameter(int, double);
 
 private :
-  //Tools for energy loss calculations in light response simulations
-  int LoadEnergyLossFile(const char *);
-  void ClearEnergyLossInfo();
-  std::vector <double> ParticleEnergy; //MeV/u
-  std::vector <double> LiseELoss[NUM_MODELS_ELOSS];   //MeV/micron
-  double Emax; //MeV/u
-  double Emin; //MeV/u
-  ROOT::Math::Interpolator SplineInterpolator[NUM_MODELS_ELOSS];
-  ///////////////////////////////////////////////////////////////////
-
-  //Nuclear Masses
-  nuclear_masses *NucData;
-  /////////////////////////////
-
+  bool fFunctionSet;
+  std::string fName;
+  TF1 * fTheRootFunction;
+  double fInversePrecision;
+  ROOT::Math::Interpolator * fTheRootInverseFunction;
+  std::vector<double> fInterpolatedEnergy;
+  std::vector<double> fInterpolatedLight;
+  double fymin;
+  double fymax;
 };
 
 class HiRACsICalibration
@@ -68,28 +80,17 @@ public:
 
   void SetNumParameters(int);
   void SetParameter(int, double);
-  void InitCalibration();
-
-  void CheckCalibrationValidity(const char *, int numtel, int numcsi);
+  void InitCalibration(const char *);
 
   double GetEnergy(double ch) const;
 
 private:
-  HiRACsISimulation *fSimulationModule;
   int fNumParameters;
   double * fParameters;
-  TF1 * fCalibrationFunc;
+  TF1Fast * fCalibrationFunc;
   bool fCalibrationInitialized;
   int fZ;
   int fA;
-
-  //Calibration sampling to speed-up calc
-  std::vector<double> fCsIRawV;
-  std::vector<double> fLISEEnergyMeV;
-  TSpline3 * fVtoEInterpolated;
-  TGraph * fVtoEExtrapolated;
-  ///////////////////////////////////////
-
 };
 
 class HiRACsICalibrationManager
@@ -110,12 +111,12 @@ public:
 
 private:
 
-  std::vector<double> fChValues [CSICALIB_NUM_TEL*CSICALIB_NUM_CSI_TEL];
-  std::vector<double> fVoltageValues [CSICALIB_NUM_TEL*CSICALIB_NUM_CSI_TEL];
-  TGraph * fCsIChToVExtrapolated [CSICALIB_NUM_TEL*CSICALIB_NUM_CSI_TEL];
-  TSpline3 * fCsIChToVInterpolated [CSICALIB_NUM_TEL*CSICALIB_NUM_CSI_TEL];
+  std::vector<double> fChValues [NUM_CRYSTALS];
+  std::vector<double> fVoltageValues [NUM_CRYSTALS];
+  TGraph * fCsIChToVExtrapolated [NUM_CRYSTALS];
+  TSpline3 * fCsIChToVInterpolated [NUM_CRYSTALS];
 
-  HiRACsICalibration * fCalib[Z_MAX][A_MAX][CSICALIB_NUM_TEL*CSICALIB_NUM_CSI_TEL];
+  HiRACsICalibration * fCalib[Z_MAX][A_MAX][NUM_CRYSTALS];
 
   bool fPulserLoaded;
 
