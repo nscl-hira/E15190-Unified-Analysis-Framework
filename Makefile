@@ -4,6 +4,7 @@ ROOTCLINGORCINT   := rootcling
 
 SrcSuf    := cpp
 ObjSuf    := o
+ExeSuf    := exe
 DepSuf    := h
 PcmSuf    := _rdict.pcm
 LibSuf    := so
@@ -99,7 +100,7 @@ root : $(PROG)
 .SUFFIXES: .$(SrcSuf) .$(ObjSuf) .$(PcmSuf)
 
 $(PROG): $(OBJS) $(ROOTHTNW_DICTO) $(ROOTHTVW_DICTO) $(ROOTHTFA_DICTO) $(ROOTNWCALIBRATED_DICTO) $(ROOTHTMB_DICTO) $(ROOTMBCALIBRATED_DICTO) $(ROOTHTHIRA_DICTO) $(ROOTHIRACALIBRATED_DICTO)
-	$(CXX) $(CXXFLAGS) -o ${@} ${@}.cpp $^ $(SYSLIB) $(CFLAGS) $(RLIBS)
+	$(CXX) $(CXXFLAGS) -o ${@}.$(ExeSuf) ${@}.cpp $^ $(SYSLIB) $(CFLAGS) $(RLIBS)
 
 $(ObjDir)%.o: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) -c -o $@ $< $(CFLAGS)

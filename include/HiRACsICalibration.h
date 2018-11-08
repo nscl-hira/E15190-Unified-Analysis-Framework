@@ -82,7 +82,7 @@ public:
   void SetParameter(int, double);
   void InitCalibration(const char *);
 
-  double GetEnergy(double ch) const;
+  double GetEnergy(double V) const;
 
 private:
   int fNumParameters;
