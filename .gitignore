@@ -3,13 +3,7 @@
 outputNW
 *.png
 slurm
-slurm/slurm.folder
-slurm/slurm.folder
 *.folder
-slurm/slurm.folder
-*.root
-slurm/slurm.folder
-slurm/slurm.folder
 slurm/slurm.folder
 exec_CreateUsefulHiRAHistograms
 exec_CreateUsefulHiRAHistograms.cpp

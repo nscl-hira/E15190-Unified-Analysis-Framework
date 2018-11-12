@@ -151,7 +151,7 @@ void E15190Reader::CreateUsefulHiRAHistograms(const char * file_name, Long64_t e
     HiRACalibratedData * HiRA = fHiRACal->Get();
 
     for(int i=0; i< HiRA->fmulti; i++) {
-      
+
       //if(HiRA->fnumtel[i]==0 && HiRA->fnumcsi[i]==0 && HiRA->fnumstripf[i]==5) HiRADERAWCSIRAW_SINGLESTRIPCSI->Fill(HiRA->fEnergycsi[i], HiRA->fEnergySifHi[i]);
 
       HiRADECALCSICALALLPROTONS->Fill(HiRA->fEnergycsiCalProtons[i], HiRA->fEnergySifCal[i]);
@@ -165,9 +165,9 @@ void E15190Reader::CreateUsefulHiRAHistograms(const char * file_name, Long64_t e
   //Writing histograms to file
   //FileOut->WriteTObject(HiRADERAWCSIRAW_SINGLESTRIPCSI, HiRADERAWCSIRAW_SINGLESTRIPCSI->GetName());
   FileOut->WriteTObject(HiRADECALCSICALALLPROTONS, HiRADECALCSICALALLPROTONS->GetName());
-  FileOut->WriteTObject(HiRADECALCSICALALL, HiRADECALCSICALALL->GetName());
+  //FileOut->WriteTObject(HiRADECALCSICALALL, HiRADECALCSICALALL->GetName());
   for(int i=0; i<NUM_TEL; i++) {
-    FileOut->WriteTObject(HiRADECALCSICALPROTONS[i], HiRADECALCSICALPROTONS[i]->GetName());
+    //FileOut->WriteTObject(HiRADECALCSICALPROTONS[i], HiRADECALCSICALPROTONS[i]->GetName());
     for(int j=0; j<NUM_CSI_TEL; j++) {
       FileOut->WriteTObject(HiRADECALCSIRAW[NUM_CSI_TEL*i+j], HiRADECALCSIRAW[NUM_CSI_TEL*i+j]->GetName());
     }
