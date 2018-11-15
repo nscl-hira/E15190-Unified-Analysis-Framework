@@ -47,7 +47,8 @@ int MBImpactParameter::LoadImpactParameter(const char * file_name)
 
     int multi;
 
-    LineStream>>multi>>fbhat[multi-1]>>fbhatErrors[multi-1]>>fImpactParameters[multi-1]>>fImpactParameterErrors[multi-1];
+    LineStream>>multi;
+    LineStream>>fbhat[multi-1]>>fbhatErrors[multi-1]>>fImpactParameters[multi-1]>>fImpactParameterErrors[multi-1];
 
     NRead++;
   }

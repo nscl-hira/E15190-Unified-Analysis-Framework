@@ -13,6 +13,8 @@
 
 int main (int argc, char ** argv)
 {
+  printf("Welcome to E15190-Unified-Analysis-Framework\n");
+
   if(argc<=1) return -1;
 
   // Building Epxeriment Info class

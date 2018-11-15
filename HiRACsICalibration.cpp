@@ -217,6 +217,7 @@ int HiRACsICalibrationManager::LoadEnergyCalibration(const char * file_name)
     for(int i=0; i<num_parameters; i++) {
       fCalib[Z][A][numtel*NUM_CSI_TEL+numcsi]->SetParameter(i,parameters[i]);
     }
+
     fCalib[Z][A][numtel*NUM_CSI_TEL+numcsi]->InitCalibration(formula.c_str());
 
     NRead++;
@@ -263,6 +264,7 @@ void HiRACsICalibration::SetParameter(int par_to_set, double value)
 void HiRACsICalibration::InitCalibration(const char * formula)
 {
   fCalibrationFunc = new TF1Fast ("fCalibrationFunc", formula, 0, 5000);
+
   fCalibrationFunc->SetParameters(fParameters);
   fCalibrationFunc->InitInverseFunction();
 
@@ -283,7 +285,8 @@ double HiRACsICalibration::GetEnergy(double V) const
 TF1Fast::TF1Fast(double precision) :
 fFunctionSet(false),
 fTheRootFunction(0),
-fInversePrecision(precision)
+fInversePrecision(precision),
+fTheRootInverseFunction(0)
 {}
 
 //______________________________________________
@@ -292,7 +295,7 @@ fFunctionSet(true),
 fName(name),
 fTheRootFunction(new TF1(name, formula, xmin, xmax)),
 fInversePrecision(precision),
-fTheRootInverseFunction(new ROOT::Math::Interpolator())
+fTheRootInverseFunction(0)
 {}
 
 //______________________________________________
@@ -314,7 +317,7 @@ void TF1Fast::SetFunction(TF1 * TheFunction)
 {
   fTheRootFunction=TheFunction;
   fName.assign(TheFunction->GetName());
-  fTheRootInverseFunction=new ROOT::Math::Interpolator();
+  fTheRootInverseFunction=0;
   fFunctionSet=true;
 }
 
@@ -324,6 +327,7 @@ void TF1Fast::InitInverseFunction()
   double xmin;
   double xmax;
   fTheRootFunction->GetRange(xmin,xmax);
+
   for(double TheEnergy=xmin; TheEnergy<xmax; TheEnergy+=fInversePrecision) {
     fInterpolatedEnergy.push_back(TheEnergy);
     fInterpolatedLight.push_back(fTheRootFunction->Eval(TheEnergy));
@@ -334,7 +338,7 @@ void TF1Fast::InitInverseFunction()
   fymin=fTheRootFunction->Eval(xmin);
   fymax=fTheRootFunction->Eval(xmax);
 
-  fTheRootInverseFunction->SetData(fInterpolatedLight,fInterpolatedEnergy);
+  fTheRootInverseFunction = new TSpline3("TheRootInverseFunction", fInterpolatedLight.data() ,fInterpolatedEnergy.data(), fInterpolatedLight.size());
 }
 
 //______________________________________________

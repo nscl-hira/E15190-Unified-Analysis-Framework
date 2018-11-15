@@ -1,7 +1,6 @@
 #ifndef HIRACSICalibRATION_h
 #define HIRACSICalibRATION_h
 
-#include <Math/Interpolator.h>
 #include <TGraph.h>
 #include <TGraphErrors.h>
 #include <fstream>
@@ -65,7 +64,7 @@ private :
   std::string fName;
   TF1 * fTheRootFunction;
   double fInversePrecision;
-  ROOT::Math::Interpolator * fTheRootInverseFunction;
+  TSpline3 * fTheRootInverseFunction;
   std::vector<double> fInterpolatedEnergy;
   std::vector<double> fInterpolatedLight;
   double fymin;

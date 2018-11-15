@@ -240,6 +240,7 @@ void E15190Reader::BuildCalibratedTree(const char * file_name, Long64_t evt_amou
   TreeOut->GetUserInfo()->Add(fBeamEnergy);
   TreeOut->GetUserInfo()->Add(fTarget);
 
+  TreeOut->SetDirectory(FileOut);
   TreeOut->SetAutoSave(5000000);
 
   Long64_t nentries=fChain->GetEntries();
