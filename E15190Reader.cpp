@@ -5,6 +5,7 @@ E15190Reader::E15190Reader(TChain * Chain, HTRunInfo * CurrRunInfo, const char *
 fCurrRunInfo(CurrRunInfo),
 fHiRA(new TTreeReaderValue<HTHiRAData> *[NUM_TEL]),
 fChain(Chain),
+fStartTime(clock()),
 fDegToRad(TMath::Pi()/180.),
 fRadToDeg(180./TMath::Pi()),
 fSpeedOfLight(29.9792),
@@ -195,6 +196,7 @@ int E15190Reader::LoadNWPositionCalibration(const char * file_name, const char *
       printf("Loaded position calibration for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA Position calibration file %s\n", file_name);
     fNWAPositionCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -205,10 +207,10 @@ int E15190Reader::LoadNWPositionCalibration(const char * file_name, const char *
       printf("Loaded position calibration for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB Position calibration file %s\n", file_name);
     fNWBPositionCalibrated=false;
   }
 
-  printf("Error: Error while loading NW Position calibration file %s\n", file_name);
   return -1;
 }
 
@@ -223,6 +225,7 @@ int E15190Reader::LoadNWCosmicRayPosition(const char * file_name, const char * W
       printf("Loaded cosmics calibration for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA cosmic ray positions %s\n", file_name);
     fNWACosmicRayPositionLoaded=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -233,10 +236,10 @@ int E15190Reader::LoadNWCosmicRayPosition(const char * file_name, const char * W
       printf("Loaded cosmics calibration for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB cosmic ray positions %s\n", file_name);
     fNWBCosmicRayPositionLoaded=false;
   }
 
-  printf("Error: Error while loading NW cosmic ray positions %s\n", file_name);
   return -1;
 }
 
@@ -251,6 +254,7 @@ int E15190Reader::LoadNWTimeCalibration(const char * file_name, const char * Wal
       printf("Loaded time calibration for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA time calibration %s\n", file_name);
     fNWATimeCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -261,10 +265,10 @@ int E15190Reader::LoadNWTimeCalibration(const char * file_name, const char * Wal
       printf("Loaded time calibration for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB time calibration %s\n", file_name);
     fNWBTimeCalibrated=false;
   }
 
-  printf("Error: Error while loading NW time calibration %s\n", file_name);
   return -1;
 }
 
@@ -279,6 +283,7 @@ int E15190Reader::LoadNWGeometryFiducialPoints(const char * file_name, const cha
       printf("Loaded geometry fiducial points for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA geometry fiducial points %s\n", file_name);
     fNWAGeometryCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -289,10 +294,10 @@ int E15190Reader::LoadNWGeometryFiducialPoints(const char * file_name, const cha
       printf("Loaded geometry fiducial points for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB geometry fiducial points %s\n", file_name);
     fNWBGeometryCalibrated=false;
   }
 
-  printf("Error: Error while loading NW geometry fiducial points %s\n", file_name);
   return -1;
 }
 
@@ -307,6 +312,7 @@ int E15190Reader::LoadNWPulseHeightMatching(const char * file_name, const char *
       printf("Loaded gain matching for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA gain matching %s\n", file_name);
     fNWAPulseHeightMatched=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -317,10 +323,10 @@ int E15190Reader::LoadNWPulseHeightMatching(const char * file_name, const char *
       printf("Loaded gain matching for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB gain matching %s\n", file_name);
     fNWBPulseHeightMatched=false;
   }
 
-  printf("Error: Error while loading NW gain matching %s\n", file_name);
   return -1;
 }
 
@@ -335,6 +341,7 @@ int E15190Reader::LoadNWPulseHeightCalibration(const char * file_name, const cha
       printf("Loaded pulse height calibration for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA pulse height calibration %s\n", file_name);
     fNWAPulseHeightCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -345,10 +352,10 @@ int E15190Reader::LoadNWPulseHeightCalibration(const char * file_name, const cha
       printf("Loaded pulse height calibration for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB pulse height calibration %s\n", file_name);
     fNWBPulseHeightCalibrated=false;
   }
 
-  printf("Error: Error while loading NW pulse height calibration %s\n", file_name);
   return -1;
 }
 
@@ -363,6 +370,7 @@ int E15190Reader::LoadNWPSDFlattening(const char * file_name, const char * WallT
       printf("Loaded PSD Flattening info for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA PSD flattening info %s\n", file_name);
     fNWAPSDFlattened=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -373,10 +381,10 @@ int E15190Reader::LoadNWPSDFlattening(const char * file_name, const char * WallT
       printf("Loaded PSD Flattening info for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB PSD flattening info %s\n", file_name);
     fNWBPSDFlattened=false;
   }
 
-  printf("Error: Error while loading NW PSD flattening info %s\n", file_name);
   return -1;
 }
 
@@ -391,6 +399,7 @@ int E15190Reader::LoadNWPSDCuts(const char * file_name, const char * WallToCalib
       printf("Loaded IsGamma Cuts info for NWA %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWA IsGamma Cuts %s\n", file_name);
     fNWAPSDCutsLoaded=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -401,10 +410,10 @@ int E15190Reader::LoadNWPSDCuts(const char * file_name, const char * WallToCalib
       printf("Loaded IsGamma Cuts info for NWB %s\n", file_name);
       return NLines;
     }
+    printf("Error: Error while loading NWB IsGamma Cuts %s\n", file_name);
     fNWBPSDCutsLoaded=false;
   }
 
-  printf("Error: Error while loading NW IsGamma Cuts %s\n", file_name);
   return -1;
 }
 
@@ -1075,14 +1084,35 @@ double E15190Reader::GetSibEMeV(int ch, int telescope, int numstripb) const
 //____________________________________________________
 void E15190Reader::PrintPercentage(Long64_t jentry, Long64_t nentries) const
 {
+  double time_elapsed = (double)(clock() - fStartTime)/CLOCKS_PER_SEC;
   std::cout << "  Percentage = " << std::fixed << std::setprecision(1) << std::setw(5) << (100*double(jentry)/nentries) << " %";
   std::cout << "   [";
   int printindex=0;
   for(; printindex<int(100*double(jentry)/nentries); printindex+=5) std::cout << "=";
   for(; printindex<100; printindex+=5) std::cout << " ";
-  std::cout << "]\r"; std::cout.flush();
+  std::cout << "]   " << "elapsed time " << std::setprecision(1) <<
+  (time_elapsed<60 ? time_elapsed : (time_elapsed<3600 ? time_elapsed/60 : time_elapsed/3600)) <<
+  (time_elapsed<60 ? " s; " : (time_elapsed<3600 ? " m; " : " h; "));
+  if(jentry>0) {
+    double time_remaining = (time_elapsed/jentry)*(nentries-jentry);
+    std::cout << " estimated remaining time " << std::setprecision(1) <<
+    (time_remaining<60 ? time_remaining : (time_remaining<3600 ? time_remaining/60 : time_remaining/3600)) <<
+    (time_remaining<60 ? " s      " : (time_remaining<3600 ? " m      " : " h      "));
+  }
+  std::cout << "\r";
+  std::cout.flush();
 }
 
+//____________________________________________________
+void E15190Reader::PrintPercentageSimple(Long64_t jentry, Long64_t nentries) const
+{
+  std::cout << "  Percentage = " << std::fixed << std::setprecision(1) << std::setw(5) << (100*double(jentry)/nentries) << " %";
+  std::cout << "   [";
+  int printindex=0;
+  for(; printindex<int(100*double(jentry)/nentries); printindex+=5) std::cout << "=";
+  for(; printindex<100; printindex+=5) std::cout << " ";
+  std::cout << "]   \r"; std::cout.flush();
+}
 
 //____________________________________________________
 void E15190Reader::Loop(const char * file_name, Long64_t evt_amount)
@@ -1098,6 +1128,7 @@ void E15190Reader::Loop(const char * file_name, Long64_t evt_amount)
   }
   Long64_t jentry=0;
   std::cout << "found " << nentries << " entries\n";
+  fStartTime = clock(); // initializing start time
   for(;fE15190Reader->Next() && jentry<nentries; jentry++)
   {
     if(jentry%100000==0) {
@@ -1157,6 +1188,7 @@ void E15190Reader::LoopOnCalibratedData(const char * file_name, Long64_t evt_amo
   }
   Long64_t jentry=0;
   std::cout << "found " << nentries << " entries\n";
+  fStartTime = clock(); // initializing start time
   for(;fE15190Reader->Next() && jentry<nentries; jentry++)
   {
     if(jentry%100000==0) {

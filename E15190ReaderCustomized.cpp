@@ -27,6 +27,7 @@ void E15190Reader::CreateUsefulVetoWallHistograms(const char * file_name, Long64
   }
   Long64_t jentry=0;
   std::cout << "found " << nentries << " entries\n";
+  fStartTime = clock(); // initializing start time
   for(;fE15190Reader->Next() && jentry<nentries; jentry++)
   {
     if(jentry%100000==0) {
@@ -81,6 +82,7 @@ void E15190Reader::CreateUsefulForwardArrayHistograms(const char * file_name, Lo
   }
   Long64_t jentry=0;
   std::cout << "found " << nentries << " entries\n";
+  fStartTime = clock(); // initializing start time
   for(;fE15190Reader->Next() && jentry<nentries; jentry++)
   {
     if(jentry%100000==0) {
@@ -142,6 +144,7 @@ void E15190Reader::CreateUsefulHiRAHistograms(const char * file_name, Long64_t e
   }
   Long64_t jentry=0;
   std::cout << "found " << nentries << " entries\n";
+  fStartTime = clock(); // initializing start time
   for(;fE15190Reader->Next() && jentry<nentries; jentry++)
   {
     if(jentry%100000==0) {

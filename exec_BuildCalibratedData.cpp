@@ -11,11 +11,16 @@
 #include <HTExperimentInfo.h>
 #include <HTRunInfo.h>
 
+#include <E15190ReaderLogo.h>
+
 int main (int argc, char ** argv)
 {
-  printf("Welcome to E15190-Unified-Analysis-Framework\n");
+  PrintE15190ReaderLogo(); //logo printing
 
-  if(argc<=1) return -1;
+  if(argc<=1) { //no input provided
+    printf("Error: Please provide at least one input!\n");
+    return -1;
+  }
 
   // Building Epxeriment Info class
   HTExperimentInfo * ExpInfo = new HTExperimentInfo();

@@ -11,7 +11,7 @@ LibSuf    := so
 ObjDir    := obj/
 LibDir    := lib/
 
-OBJS := E15190Reader.$(ObjSuf) E15190ReaderData.$(ObjSuf) E15190ReaderCustomized.$(ObjSuf) shared.$(ObjSuf)
+OBJS := E15190Reader.$(ObjSuf) E15190ReaderData.$(ObjSuf) E15190ReaderCustomized.$(ObjSuf) shared.$(ObjSuf) E15190ReaderLogo.$(ObjSuf)
 OBJS += HTNeutronWallRootEvent.$(ObjSuf) HTForwardArrayRootEvent.$(ObjSuf) HTVetoWallRootEvent.$(ObjSuf)
 OBJS += NWPositionCalibration.$(ObjSuf) NWCosmicRayManager.$(ObjSuf) NWTimeCalibration.$(ObjSuf) NWPulseHeightCalibration.$(ObjSuf) NWGeometry.$(ObjSuf) NWPulseShapeDiscrimination.$(ObjSuf)
 OBJS += FATimeCalibration.$(ObjSuf)

@@ -21,6 +21,7 @@
 #include <TMultiGraph.h>
 #include <TLatex.h>
 #include <TCanvas.h>
+#include <time.h>
 
 #include <TDCSpareChannels.h>
 
@@ -228,6 +229,8 @@ private :
   TNamed * fBeamEnergy;
   TNamed * fTarget;
 
+  clock_t fStartTime;      // number of clocks since the start of the program initialized if required as the start for time measurement
+
   double fDegToRad;
   double fRadToDeg;
   double fSpeedOfLight;    //cm/ns
@@ -307,6 +310,7 @@ private :
   HiRAPixelization * fHiRAPixelizationModule;
 
   void PrintPercentage(Long64_t, Long64_t) const;
+  void PrintPercentageSimple(Long64_t, Long64_t) const;
 };
 
 #endif

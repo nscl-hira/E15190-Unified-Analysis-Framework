@@ -249,6 +249,7 @@ void E15190Reader::BuildCalibratedTree(const char * file_name, Long64_t evt_amou
   }
   Long64_t jentry=0;
   std::cout << "found " << nentries << " entries\n";
+  fStartTime = clock(); // initializing start time
   for(;fE15190Reader->Next() && jentry<nentries; jentry++)
   {
     if(jentry%100000==0) {
