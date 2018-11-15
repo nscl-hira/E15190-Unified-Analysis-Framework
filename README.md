@@ -72,7 +72,7 @@ For the use of the framework in batch mode, a basic linux script for the sbatch 
 ````
 run_LaunchInEmber
 ````
-This file has to be configure prior to use the framework in batch mode. The standard file provides some default values for the requested resources that can be customized by the user depending on his needs, see the following:
+This file has to be configure prior to use the framework in batch mode. The firts thing to configure is the path to the framework directory, given by the variable "FRAMEWORK_PATH". The standard file provides some default values for the requested resources that can be customized by the user depending on his needs, see the following:
 ````
 #SBATCH --time=01:00:00
 #SBATCH --ntasks=1
@@ -81,6 +81,7 @@ This file has to be configure prior to use the framework in batch mode. The stan
 #SBATCH --job-name=$run_num
 #SBATCH --output=slurm/$run_num.out
 ````
+Note that, by default, a the run number is used as the job name and the output file name. The latter, is automatically stored in the sub-directory "slurm". It is usually convenient to make a simbolic link to an area with extended disk space, since the slurm output files can become very big espetially in the occurrence of program errors.
 ### Limitations
 To be written.
 ## The E15190Reader Framework
@@ -97,6 +98,11 @@ $ ./exec_TheMainProgram.exe output_1 output_2 ... output_N
 ````
 Note that the executable file is automatically produced by the compilation procedure only when the main program file is named as "exec_\*.cpp" and that its extension is ".exe".
 ### Run the code on NSCL ember
+To run the code in sbatch mode, e.g. in NSCL ember, use the following command (again making the same assumption of the previous section):
+````
+$ run_LaunchInEmber exec_TheMainProgram.exe output_1 output_2 ... output_N
+````
+The script "run_LaunchInEmber" has to be configured prior execution, as explained in the section "Configure the Framework".
 ### Calibrated output data
 ### Customized Methods
 ### How to add new features
