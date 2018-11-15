@@ -71,6 +71,7 @@ The framework allows to handle data of the E15190 experiment, with HiRAEVTMapper
 a) Looping on previously existing raw data  
 b) Building a new tree with calibrated data structures  
 c) Looping on previously built calibrated data tree  
+For a) and c) cases, the user should usually write his own main program following the examples, respectively, given by exec_LoopOnData.cpp and exec_LoopOnCalibratedData.cpp. The core of the main program is usually implemented as a method of the E15190Reader main class. One can use the example provided by the template methods E15190Reader::LoopOnData(const char \*, Long64_t) and E15190Reader::LoopOnCalibratedData(const char \*, Long64_t), located in E15190Reader.cpp, respectively for cases a) and c). It is convenient to store the implementation of additional methods by the user in the file E15190ReaderCustomized. This allows to more easier update the program to a future version, restoring all the customized methods already implemented by the user. The case b) is usually standard and a basic implementation is provided in the main program exec_BuildCalibratedData.cpp.
 ### Run the code
 ### Run the code on NSCL ember
 ### Calibrated output data
