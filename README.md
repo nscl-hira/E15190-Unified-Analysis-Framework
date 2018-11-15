@@ -67,12 +67,17 @@ To be written.
 To be written.
 ## The E15190Reader Framework
 ### Framework Description
-The framework allows to handle data of the E15190 experiment, with HiRAEVTMapper data structures, by including all the existing calibrations and detector analysis tools. The framework is fully versatile since it allows to include any possible combination of existing detectors in the analysis, and any possible combination of required calibrations. Calibrations are automatically retrieved from the corresponding files (usually located in the "calibration" sub-folder, as configured run-by-run in the "config/HiRAEVT.conf" file, and depending on the required combination of detectors). The framework includes 3 main features that are here summarized:  
+The framework provides a series of tools to easily handle data of the E15190 experiment, with HiRAEVTMapper data structures, by including all the existing calibrations and detector analysis features. The framework can be used by implementing individual programs, which typically make use of methods of a main class called E15190Reader. The framework is fully versatile since it allows to include any possible combination of existing detectors in the analysis, and any possible combination of required calibrations. Calibrations are automatically retrieved from the corresponding files (usually located in the "calibration" sub-folder, as configured run-by-run in the "config/HiRAEVT.conf" file, and depending on the required combination of detectors). The framework includes 3 main features that are here summarized:  
 a) Looping on previously existing raw data  
 b) Building a new tree with calibrated data structures  
 c) Looping on previously built calibrated data tree  
 For a) and c) cases, the user should usually write his own main program following the examples, respectively, given by exec_LoopOnData.cpp and exec_LoopOnCalibratedData.cpp. The core of the main program is usually implemented as a method of the E15190Reader main class. One can use the example provided by the template methods E15190Reader::LoopOnData(const char \*, Long64_t) and E15190Reader::LoopOnCalibratedData(const char \*, Long64_t), located in E15190Reader.cpp, respectively for cases a) and c). It is convenient to store the implementation of additional methods by the user in the file E15190ReaderCustomized. This allows to more easier update the program to a future version, restoring all the customized methods already implemented by the user. The case b) is usually standard and a basic implementation is provided in the main program exec_BuildCalibratedData.cpp.
 ### Run the code
+Assuming that the user has created a main program called exec_TheMainProgram.cpp, which receives a series of input via the linux shell called input_1, input_2, ..., input_N. After compilation (see the Section "Compile the Code"), the user can simply launch the program as a normal linux program:
+````
+$ ./exec_TheMainProgram.exe output_1 output_2 ... output_N
+````
+Note that the executable file is automatically produce by the compilation procedure only when the main program file is named as "exec_\*.cpp" and that its extension is ".exe".
 ### Run the code on NSCL ember
 ### Calibrated output data
 ### Customized Methods
