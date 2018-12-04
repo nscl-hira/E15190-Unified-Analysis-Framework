@@ -54,7 +54,7 @@ int HiRAPixelization::Pixelization(int ntel, HiRACalibratedBuffer * pEvent, HiRA
    for(int i=0; i<pEvent->fmulticsi; i++)
    {
      if(pEvent->fEnergycsi[i] == 4096) continue;
-     if(pEvent->fEnergycsi[i] > 0) {
+     if(pEvent->fEnergycsiCalProtons[i] > 0) {
        fpixel[ntel]->Csi->Add(i, pEvent->fnumcsi[i],pEvent->fEnergycsiCalProtons[i],0.,pEvent->fEnergycsi[i],pEvent->fTimecsi[i]);
      }
    }
@@ -94,13 +94,13 @@ int HiRAPixelization::Pixelization(int ntel, HiRACalibratedBuffer * pEvent, HiRA
      pCalibratedEvent->fEnergySifLo[pCalibratedEvent->fmulti]=pEvent->fEnergySifLo[fpixel[ntel]->fstripfindex[i]];
      pCalibratedEvent->fTimeSif[pCalibratedEvent->fmulti]=pEvent->fTimeSif[fpixel[ntel]->fstripfindex[i]];
      pCalibratedEvent->fEnergySifMatched[pCalibratedEvent->fmulti]=pEvent->fEnergySifMatched[fpixel[ntel]->fstripfindex[i]];
-     pCalibratedEvent->fEnergySifCal[pCalibratedEvent->fmulti]=pEvent->fEnergySifCal[fpixel[ntel]->fstripfindex[i]];
+     pCalibratedEvent->fEnergySifCal[pCalibratedEvent->fmulti]=fpixel[ntel]->fEnergySif[i]; //the energy of the strip has been changed accordin to the HIRAPixel::Neighbours method
      pCalibratedEvent->fnumstripb[pCalibratedEvent->fmulti]=pEvent->fnumstripb[fpixel[ntel]->fstripbindex[i]];
      pCalibratedEvent->fEnergySibHi[pCalibratedEvent->fmulti]=pEvent->fEnergySibHi[fpixel[ntel]->fstripbindex[i]];
      pCalibratedEvent->fEnergySibLo[pCalibratedEvent->fmulti]=pEvent->fEnergySibLo[fpixel[ntel]->fstripbindex[i]];
      pCalibratedEvent->fTimeSib[pCalibratedEvent->fmulti]=pEvent->fTimeSib[fpixel[ntel]->fstripbindex[i]];
      pCalibratedEvent->fEnergySibMatched[pCalibratedEvent->fmulti]=pEvent->fEnergySibMatched[fpixel[ntel]->fstripbindex[i]];
-     pCalibratedEvent->fEnergySibCal[pCalibratedEvent->fmulti]=pEvent->fEnergySibCal[fpixel[ntel]->fstripbindex[i]];
+     pCalibratedEvent->fEnergySibCal[pCalibratedEvent->fmulti]=fpixel[ntel]->fEnergySib[i]; //the energy of the strip has been changed accordin to the HIRAPixel::Neighbours method
      pCalibratedEvent->fnumcsi[pCalibratedEvent->fmulti]=pEvent->fnumcsi[fpixel[ntel]->fcsiindex[i]];
      pCalibratedEvent->fEnergycsi[pCalibratedEvent->fmulti]=pEvent->fEnergycsi[fpixel[ntel]->fcsiindex[i]];
      pCalibratedEvent->fEnergycsiCalProtons[pCalibratedEvent->fmulti]=pEvent->fEnergycsiCalProtons[fpixel[ntel]->fcsiindex[i]]; //Proton equivalent CsI energy
