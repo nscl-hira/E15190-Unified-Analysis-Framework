@@ -71,7 +71,7 @@ int main (int argc, char ** argv)
     E15190Analyzer.InitAllCalibrations();
 
     //Definition of the output file //////
-    std::string FileOutName(Form("%soutput_%04d.root", ExpInfo->GetAnalyzedRootFilePath(), CurrRunInfo->GetRunNumber()));
+    std::string FileOutName(Form("%soutput_%04d.root", ExpInfo->GetAnalyzedHistogramFilePath(), CurrRunInfo->GetRunNumber()));
 
     //Run the required method(s) /////////
     E15190Analyzer.Loop(FileOutName.c_str(), evt_amount);

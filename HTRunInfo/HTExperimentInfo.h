@@ -44,6 +44,7 @@ public:
   const char * GetRootFilePath() const;           //!
   const char * GetMappedRootFilePath() const;     //!
   const char * GetAnalyzedRootFilePath() const;   //!
+  const char * GetAnalyzedHistogramFilePath() const;   //!  
   const char * GetDetectorToAnalyze() const;      //!
 
   void Clear();                                   //!
@@ -98,6 +99,7 @@ private:
   std::string fUnpackedRootFilePath;
   std::string fMappedRootFilePath;
   std::string fAnalyzedRootFilePath;
+  std::string fAnalyzedHistogramFilePath;
   std::string fDetectorToAnalyze;
 
   int fFirstRun;

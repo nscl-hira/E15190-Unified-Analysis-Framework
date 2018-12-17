@@ -67,7 +67,7 @@ int main (int argc, char ** argv)
     }
 
     //Definition of the output file //////
-    std::string FileOutName(Form("%soutput_%04d.root", ExpInfo->GetAnalyzedRootFilePath(), CurrRunInfo->GetRunNumber()));
+    std::string FileOutName(Form("%soutput_%04d.root", ExpInfo->GetAnalyzedHistogramFilePath(), CurrRunInfo->GetRunNumber()));
 
     //Run the required method(s) /////////
     E15190Analyzer.LoopOnCalibratedData(FileOutName.c_str(), evt_amount);

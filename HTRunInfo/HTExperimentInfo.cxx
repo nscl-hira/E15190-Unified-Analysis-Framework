@@ -297,6 +297,8 @@ void HTExperimentInfo::ParseSetConfigLine(const char *line_to_parse)
     fMappedRootFilePath.assign(NewValue);
   } else if (ValueToSet.compare("ANALYSISFRAMEWORK_ROOT_FILE_PATH")==0) {
     fAnalyzedRootFilePath.assign(NewValue);
+  } else if (ValueToSet.compare("ANALYSISFRAMEWORK_HISTOGRAM_FILE_PATH")==0) {
+    fAnalyzedHistogramFilePath.assign(NewValue);
   } else if (ValueToSet.compare("DETECTOR_TO_ANALYZE")==0) {
     fDetectorToAnalyze.assign(NewValue);
   }
@@ -511,6 +513,12 @@ const char * HTExperimentInfo::GetMappedRootFilePath() const
 const char * HTExperimentInfo::GetAnalyzedRootFilePath() const
 {
   return fAnalyzedRootFilePath.c_str();
+}
+
+//________________________________________________
+const char * HTExperimentInfo::GetAnalyzedHistogramFilePath() const
+{
+  return fAnalyzedHistogramFilePath.c_str();
 }
 
 //________________________________________________
