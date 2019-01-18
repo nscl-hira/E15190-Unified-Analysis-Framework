@@ -13,6 +13,7 @@ fNWBarLength(200),
 fNWBarHigh(7.62),
 fNWBarThickness(6.35),
 fIsTDC(false),
+fIsTS(false),
 fIsNWA(false),
 fIsNWB(false),
 fIsFA(false),
@@ -90,6 +91,7 @@ fHiRAPixelizationModule(new HiRAPixelization(NUM_TEL))
     if(DetectorToAdd.compare("uBall")==0) fIsMB=true;
     if(DetectorToAdd.compare("HiRA")==0) fIsHiRA=true;
     if(DetectorToAdd.compare("TDC")==0) fIsTDC=true;
+    if(DetectorToAdd.compare("TS")==0) fIsTS=true;
   }
 
   if(fChain!=0) {
@@ -116,6 +118,11 @@ fHiRAPixelizationModule(new HiRAPixelization(NUM_TEL))
       fTDCAdditionalChannels = new TDCSpareChannels();
       fTDCAdditionalChannels->InitFromMapping(fE15190Reader, fCurrRunInfo->GetMappingFile());
     }
+
+    if(fIsTS) {
+      fTimestampChannels = new TimestampChannels();
+      fTimestampChannels->InitFromMapping(fE15190Reader, fCurrRunInfo->GetMappingFile());
+    }
   }
 }
 
@@ -140,6 +147,14 @@ E15190Reader::~E15190Reader()
       if (fIsVW) delete fVetoWallCal;
       if (fIsMB) delete fMicroballCal;
       if (fIsHiRA) delete fHiRACal;
+    }
+
+    if(fIsTDC) {
+      delete fTDCAdditionalChannels;
+    }
+
+    if(fIsTS) {
+      delete fTimestampChannels;
     }
   }
 

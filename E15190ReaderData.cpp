@@ -214,6 +214,10 @@ void E15190Reader::BuildCalibratedEvent()
   if(fIsTDC) {
     fTDCAdditionalChannels->FillOutputBranches();
   }
+
+  if(fIsTS) {
+    fTimestampChannels->FillOutputBranches();
+  }
 }
 
 //____________________________________________________
@@ -235,6 +239,7 @@ void E15190Reader::BuildCalibratedTree(const char * file_name, Long64_t evt_amou
   if(fIsMB) TreeOut->Branch("uBall.","MicroballCalibratedData",&fMicroballCalibratedData,32000,2);
   if(fIsHiRA) TreeOut->Branch("HiRA.","HiRACalibratedData",&fHiRACalibratedData,32000,2);
   if(fIsTDC) fTDCAdditionalChannels->SetOutputTree(TreeOut);
+  if(fIsTS) fTimestampChannels->SetOutputTree(TreeOut);
 
   TreeOut->GetUserInfo()->Add(fBeam);
   TreeOut->GetUserInfo()->Add(fBeamEnergy);

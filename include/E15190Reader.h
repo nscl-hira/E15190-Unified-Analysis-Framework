@@ -24,6 +24,7 @@
 #include <time.h>
 
 #include <TDCSpareChannels.h>
+#include <TimestampChannels.h>
 
 #include <HTNeutronWallRootEvent.h>
 #include <HTForwardArrayRootEvent.h>
@@ -199,6 +200,8 @@ private :
   TTreeReader * fE15190Reader;
   //TDC Spare channels
   TDCSpareChannels * fTDCAdditionalChannels;
+  //Timestamp channels
+  TimestampChannels * fTimestampChannels;
   //TTreeReaderValue for non-calibrated classes
   TTreeReaderValue<HTNeutronWallData> *fNWA;
   TTreeReaderValue<HTNeutronWallData> *fNWB;
@@ -238,13 +241,14 @@ private :
   double fNWBarHigh;       //cm
   double fNWBarThickness;  //cm
 
-  bool fIsTDC;
-  bool fIsNWA;
-  bool fIsNWB;
-  bool fIsFA;
-  bool fIsVW;
-  bool fIsMB;
-  bool fIsHiRA;
+  bool fIsTDC;  //analyzing TDC spare channels
+  bool fIsTS;  //analyzing Timestamp
+  bool fIsNWA;  //analyzing Newutron Wall A
+  bool fIsNWB;  //analyzing Neutron Wall B
+  bool fIsFA;  //analyzing Forward Array
+  bool fIsVW;  //analyzing Veto Wall
+  bool fIsMB;  //analyzing Microball
+  bool fIsHiRA;  //analyzing HiRA
   bool fIsDataCalibrated;
   bool fNWAPositionCalibrated;
   bool fNWBPositionCalibrated;
