@@ -111,8 +111,9 @@ void E15190Reader::BuildCalibratedEvent()
         fVetoWallCalibratedData.fTimeTop[fVetoWallCalibratedData.fmulti]    =VetoWall->fTimeTop[i];
         fVetoWallCalibratedData.fTimeBottom[fVetoWallCalibratedData.fmulti] =VetoWall->fTimeBottom[i];
         fVetoWallCalibratedData.fGeoMean[fVetoWallCalibratedData.fmulti]    =VetoWall->fGeoMean[i];
+	fVetoWallCalibratedData.fYcm[fVetoWallCalibratedData.fmulti]        =GetVWYcm(VetoWall->fnumbar[i], VetoWall->fTimeBottom[i], VetoWall->fTimeTop[i]);
         fVetoWallCalibratedData.fGeoMeanMatched[fVetoWallCalibratedData.fmulti] =GetVWGeoMeanMatched(VetoWall->fGeoMean[i], VetoWall->fnumbar[i]);
-        fVetoWallCalibratedData.fYcm[fVetoWallCalibratedData.fmulti]        =-9999;
+	fVetoWallCalibratedData.fCalGeoMean[fVetoWallCalibratedData.fmulti] =GetVWPulseHeightCalibrated(VetoWall->fGeoMean[i],fVetoWallCalibratedData.fYcm[fNWACalibratedData.fmulti],VetoWall->fnumbar[i]);
         fVetoWallCalibratedData.fTheta[fVetoWallCalibratedData.fmulti]      =GetVWTheta(VetoWall->fnumbar[i], fVetoWallCalibratedData.fYcm[fVetoWallCalibratedData.fmulti]);
         fVetoWallCalibratedData.fPhi[fVetoWallCalibratedData.fmulti]        =GetVWPhi(VetoWall->fnumbar[i], fVetoWallCalibratedData.fYcm[fVetoWallCalibratedData.fmulti]);
         fVetoWallCalibratedData.fThetaRan[fVetoWallCalibratedData.fmulti]   =GetVWThetaRan(VetoWall->fnumbar[i], fVetoWallCalibratedData.fYcm[fVetoWallCalibratedData.fmulti]);

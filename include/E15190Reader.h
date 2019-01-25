@@ -95,6 +95,8 @@ public :
   int LoadVWGainMatchig(const char * file_name);
   int LoadVWIdentificationCuts(const char * file_name);
   int LoadVWGeometryFiducialPoints(const char * file_name);
+  int LoadVWPositionCalibration(const char * file_name);
+  int LoadVWPulseHeightCalibration(const char * file_name);
   int LoadMBGeometry(const char * file_name);
   int LoadMBDetectorStatus(const char * file_name);
   int LoadMBFastSlowHitCondition(const char * file_name);
@@ -141,6 +143,8 @@ public :
   double GetFATimeOffset(int num_det) const;
   double GetFATimePulseHeightCorrection(int num_det, double pulse_height) const;
   double GetVWGeoMeanMatched(double ch, int num_bar) const;
+  double GetVWYcm(int num_bar, double tbottom, double ttop) const;
+  double GetVWPulseHeightCalibrated(double ch, double Ycm, int num_bar) const;
   double GetVWTheta(int num_bar, double Ycm) const;
   double GetVWPhi(int num_bar, double Ycm) const;
   double GetVWThetaRan(int num_bar, double Ycm) const;
@@ -269,9 +273,11 @@ private :
   bool fNWAPSDCutsLoaded;
   bool fNWBPSDCutsLoaded;
   bool fFATimeCalibrated;
-  bool fVWGainMatched;
+  bool fVWPulseHeightMatched;
+  bool fVWPositionCalibrated;
   bool fVWIdentificationLoaded;
   bool fVWGeometryLoaded;
+  bool fVWPulseHeightCalibrated;
   bool fMBGeometryLoaded;
   bool fMBStatusLoaded;
   bool fMBHitConditionLoaded;
@@ -286,6 +292,7 @@ private :
 
   NWPositionCalibration * fNWBPositionCalibration;
   NWPositionCalibration * fNWAPositionCalibration;
+  NWPositionCalibration * fVWPositionCalibration;
   NWCosmicRayManager    * fNWACosmicRayInfo;
   NWCosmicRayManager    * fNWBCosmicRayInfo;
   NWTimeCalibration     * fNWATimeCalibration;

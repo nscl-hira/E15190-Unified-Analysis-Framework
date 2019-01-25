@@ -52,6 +52,7 @@ public:
   Double_t *fGeoMean;     //[fmulti]
 
   Double_t *fGeoMeanMatched; //[fmulti]
+  Double_t *fCalGeoMean;     //[fmulti]
   Double_t *fYcm;            //[fmulti]
   Double_t *fTheta;          //[fmulti]
   Double_t *fPhi;            //[fmulti]

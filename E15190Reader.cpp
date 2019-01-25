@@ -40,8 +40,10 @@ fNWBPSDFlattened(false),
 fNWAPSDCutsLoaded(false),
 fNWBPSDCutsLoaded(false),
 fFATimeCalibrated(false),
-fVWGainMatched(false),
+fVWPulseHeightMatched(false),
 fVWIdentificationLoaded(false),
+fVWPositionCalibrated(false),
+fVWPulseHeightCalibrated(false),
 fMBGeometryLoaded(false),
 fMBStatusLoaded(false),
 fMBHitConditionLoaded(false),
@@ -68,6 +70,7 @@ fFATimeCalibration(new FATimeCalibration(NUM_DETECTORS_FA)),
 fVWPulseHeightCalibrationTools(new VWPulseHeightCalibration(NUM_BARS_VW)),
 fVWIdentificationModule(new VWIdentification()),
 fVWGeometryModule(new VWGeometry(NUM_BARS_VW)),
+fVWPositionCalibration(new NWPositionCalibration(NUM_BARS_VW)),
 fMicroballStatus(new MBDetectorStatus()),
 fMicroballGeometry(new MBGeometry()),
 fMicroballHitCondition(new MBHitCondition()),
@@ -180,7 +183,9 @@ void E15190Reader::InitAllCalibrations()
   LoadFATimeCalibration(fCurrRunInfo->GetFATimeCalibrationFileName());
   LoadFATimePulseHeightCorrection(fCurrRunInfo->GetFAPulseHeightCorrectionFileName());
   LoadVWGainMatchig(fCurrRunInfo->GetVWGainMatchingCalibrationFileName());
+  LoadVWPulseHeightCalibration(fCurrRunInfo->GetVWPulseHeightCalibrationFileName());
   LoadVWIdentificationCuts(fCurrRunInfo->GetVWDETOFPIDCalibrationFileName());
+  LoadVWPositionCalibration(fCurrRunInfo->GetVWPositionCalibrationFileName());
   LoadVWGeometryFiducialPoints(fCurrRunInfo->GetVWGeometryFileName());
   LoadMBGeometry(fCurrRunInfo->GetMBGeometryFileName());
   LoadMBDetectorStatus(fCurrRunInfo->GerMBDetectorStatusFileName());
@@ -470,11 +475,11 @@ int E15190Reader::LoadVWGainMatchig(const char * file_name)
   if(!fIsVW) return 0;
   int NLines=fVWPulseHeightCalibrationTools->LoadGainMatching(file_name);
   if(NLines>0) {
-    fVWGainMatched=true;
+    fVWPulseHeightMatched=true;
     printf("Loaded VW gain matching %s\n", file_name);
     return NLines;
   } else {
-    fVWGainMatched=false;
+    fVWPulseHeightMatched=false;
     printf("Error: Error while loading VW gain matching %s\n", file_name);
     return -1;
   }
@@ -497,6 +502,22 @@ int E15190Reader::LoadVWIdentificationCuts(const char * file_name)
 }
 
 //____________________________________________________
+int E15190Reader::LoadVWPositionCalibration(const char * file_name)
+{
+  if(!fIsVW) return 0;
+  int NLines=fVWPositionCalibration->LoadCalibration(file_name);
+  if(NLines>0) {
+    fVWPositionCalibrated=true;
+    printf("Loaded VW Position Calibration %s\n", file_name);
+    return NLines;
+  } else {
+    fVWPositionCalibrated=false;
+    printf("Error: Error while loading VW Position Calibration %s\n", file_name);
+    return -1;
+  }
+}
+
+//____________________________________________________
 int E15190Reader::LoadVWGeometryFiducialPoints(const char * file_name)
 {
   if(!fIsVW) return 0;
@@ -508,6 +529,23 @@ int E15190Reader::LoadVWGeometryFiducialPoints(const char * file_name)
   } else {
     fVWGeometryLoaded=false;
     printf("Error: Error while loading VW Geometry %s\n", file_name);
+    return -1;
+  }
+}
+
+
+//____________________________________________________
+int E15190Reader::LoadVWPulseHeightCalibration(const char * file_name)
+{
+  if(!fIsVW) return 0;
+  int NLines=fVWPulseHeightCalibrationTools->LoadPulseHeightCalibration(file_name);
+  if(NLines>0) {
+    fVWPulseHeightCalibrated=true;
+    printf("Loaded VW Pulse Height Calibration %s\n", file_name);
+    return NLines;
+  } else {
+    fVWPulseHeightCalibrated=false;
+    printf("Error: Error while loading VW Pulse Height Calibration %s\n", file_name);
     return -1;
   }
 }
@@ -707,7 +745,19 @@ double E15190Reader::GetFATimePulseHeightCorrection(int num_det, double pulse_he
 //____________________________________________________
 double E15190Reader::GetVWGeoMeanMatched(double ch, int num_bar) const
 {
-  return fVWGainMatched ? fVWPulseHeightCalibrationTools->GetGeoMeanMatched(ch, num_bar) : -9999;
+  return fVWPulseHeightMatched ? fVWPulseHeightCalibrationTools->GetGeoMeanMatched(ch, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetVWPulseHeightCalibrated(double ch, double Ycm, int num_bar) const
+{
+  return fVWPulseHeightCalibrated ? fVWPulseHeightCalibrationTools->GetPulseHeightCalibrated(ch, Ycm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetVWYcm(int num_bar, double tbottom, double ttop) const
+{
+  return fVWPositionCalibrated ? fVWPositionCalibration->GetPosition(num_bar, tbottom, ttop) : -9999;
 }
 
 //____________________________________________________

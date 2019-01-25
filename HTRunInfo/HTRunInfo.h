@@ -54,6 +54,8 @@ public:
   void SetFATimeCalibrationFile(const char * file_name) {fFATimeCalibrationFileName.assign(file_name);}
   void SetFAPulseHeightCorrectionFile(const char * file_name) {fFAPulseHeightCorrectionFileName.assign(file_name);}
   void SetVWGainMatchingCalibrationFile(const char * file_name) {fVWGainMatchingCalibrationFileName.assign(file_name);}
+  void SetVWPulseHeightCalibrationFile(const char * file_name) {fVWPulseHeightCalibrationFileName.assign(file_name);}
+  void SetVWPositionCalibrationFile(const char * file_name) {fVWPositionCalibrationFileName.assign(file_name);}
   void SetVWDETOFPIDCalibrationFile(const char * file_name) {fVWDETOFPIDCalibrationFileName.assign(file_name);}
   void SetVWGeometryFile(const char * file_name) {fVWGeometryFileName.assign(file_name);}
   void SetMBDetectorStatusFile(const char * file_name) {fMBDetectorStatusFileName.assign(file_name);}
@@ -88,6 +90,8 @@ public:
   const char * GetFATimeCalibrationFileName() const {return fFATimeCalibrationFileName.c_str();}
   const char * GetFAPulseHeightCorrectionFileName() const {return fFAPulseHeightCorrectionFileName.c_str();}
   const char * GetVWGainMatchingCalibrationFileName() const {return fVWGainMatchingCalibrationFileName.c_str();}
+  const char * GetVWPositionCalibrationFileName() const {return fVWPositionCalibrationFileName.c_str();}
+  const char * GetVWPulseHeightCalibrationFileName() const {return fVWPulseHeightCalibrationFileName.c_str();}
   const char * GetVWDETOFPIDCalibrationFileName() const {return fVWDETOFPIDCalibrationFileName.c_str();}
   const char * GetVWGeometryFileName() const {return fVWGeometryFileName.c_str();}
   const char * GerMBDetectorStatusFileName() const {return fMBDetectorStatusFileName.c_str();}
@@ -140,6 +144,8 @@ private:
   std::string  fFATimeCalibrationFileName;
   std::string  fFAPulseHeightCorrectionFileName;
   std::string  fVWGainMatchingCalibrationFileName;
+  std::string  fVWPositionCalibrationFileName;
+  std::string  fVWPulseHeightCalibrationFileName;
   std::string  fVWDETOFPIDCalibrationFileName;
   std::string  fVWGeometryFileName;
   std::string  fMBDetectorStatusFileName;

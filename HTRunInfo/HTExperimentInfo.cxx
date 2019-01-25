@@ -37,6 +37,8 @@ HTExperimentInfo::~HTExperimentInfo()
   if(fFATimeCalibrationFileName) delete [] fFATimeCalibrationFileName;
   if(fFAPulseHeightCorrectionFileName) delete [] fFAPulseHeightCorrectionFileName;
   if(fVWGainMatchingCalibrationFileName) delete [] fVWGainMatchingCalibrationFileName;
+  if(fVWPositionCalibrationFileName) delete [] fVWPositionCalibrationFileName;
+  if(fVWPulseHeightCalibrationFileName) delete [] fVWPulseHeightCalibrationFileName;
   if(fVWDETOFPIDCalibrationFileName) delete [] fVWDETOFPIDCalibrationFileName;
   if(fVWGeometryFileName) delete [] fVWGeometryFileName;
   if(fMBDetectorStatusFileName) delete [] fMBDetectorStatusFileName;
@@ -99,6 +101,8 @@ int HTExperimentInfo::InitClass(const char *file_name)
   fFATimeCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fFAPulseHeightCorrectionFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fVWGainMatchingCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fVWPositionCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fVWPulseHeightCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fVWDETOFPIDCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fVWGeometryFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fMBDetectorStatusFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
@@ -250,6 +254,8 @@ HTRunInfo * HTExperimentInfo::GetRunInfo(int run_num) const
   newRunInfo->SetFATimeCalibrationFile( 	 fFATimeCalibrationFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetFAPulseHeightCorrectionFile(	 fFAPulseHeightCorrectionFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetVWGainMatchingCalibrationFile(	 fVWGainMatchingCalibrationFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetVWPositionCalibrationFile(	 fVWPositionCalibrationFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetVWPulseHeightCalibrationFile(	 fVWPulseHeightCalibrationFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetVWDETOFPIDCalibrationFile(	 fVWDETOFPIDCalibrationFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetVWGeometryFile(	 fVWGeometryFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetMBDetectorStatusFile(		 fMBDetectorStatusFileName[run_num-fFirstRun].c_str());
@@ -439,6 +445,10 @@ void HTExperimentInfo::ParseSetConfigLineRunInfo(const char *line_to_parse, int 
     fFAPulseHeightCorrectionFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("VW_GAIN_MATCHING_CALIBRATION")==0) {
     fVWGainMatchingCalibrationFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("VW_POSITION_CALIBRATION")==0) {
+    fVWPositionCalibrationFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("VW_PULSEHEIGHT_CALIBRATION")==0) {
+    fVWPulseHeightCalibrationFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("VW_DETOF_PID_CALIBRATION")==0) {
     fVWDETOFPIDCalibrationFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("VW_GEOMETRY")==0) {

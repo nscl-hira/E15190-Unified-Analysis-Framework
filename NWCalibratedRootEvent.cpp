@@ -104,6 +104,7 @@ fmulti(0)
   fGeoMean    =new Double_t[num_bars];
 
   fGeoMeanMatched = new Double_t[num_bars];
+  fCalGeoMean = new Double_t[num_bars];
   fYcm = new Double_t[num_bars];
   fTheta = new Double_t[num_bars];
   fPhi = new Double_t[num_bars];
@@ -125,6 +126,7 @@ fmulti(0)
   fGeoMean    =new Double_t[25];
 
   fGeoMeanMatched = new Double_t[25];
+  fCalGeoMean = new Double_t[25];
   fYcm = new Double_t[25];
   fTheta = new Double_t[25];
   fPhi = new Double_t[25];
@@ -145,6 +147,7 @@ VetoWallCalibratedData::~VetoWallCalibratedData()
   delete [] fGeoMean ;
 
   delete [] fGeoMeanMatched;
+  delete [] fCalGeoMean;
   delete [] fYcm;
   delete [] fTheta;
   delete [] fPhi;
