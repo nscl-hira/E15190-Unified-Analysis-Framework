@@ -219,7 +219,7 @@ int HiRACsICalibrationManager::LoadEnergyCalibration(const char * file_name)
     }
 
     fCalib[Z][A][numtel*NUM_CSI_TEL+numcsi]->InitCalibration(formula.c_str());
-
+        
     NRead++;
   }
 
@@ -334,7 +334,7 @@ void TF1Fast::InitInverseFunction()
   }
   fInterpolatedEnergy.push_back(xmax);
   fInterpolatedLight.push_back(fTheRootFunction->Eval(xmax));
-
+  
   fymin=fTheRootFunction->Eval(xmin);
   fymax=fTheRootFunction->Eval(xmax);
 
@@ -361,6 +361,6 @@ double TF1Fast::Eval(double X)
 
 //______________________________________________
 double TF1Fast::EvalInverse(double Y)
-{
+{  
   return Y>=fymin && Y<=fymax ? fTheRootInverseFunction->Eval(Y) : -9999;
 }
