@@ -192,10 +192,9 @@ public :
   void   BuildCalibratedEvent();
 
   //Customized methods
-  // input here customized methods
-  void   CreateUsefulVetoWallHistograms(const char *, Long64_t evt_amount=0);
-  void   CreateUsefulForwardArrayHistograms(const char *, Long64_t evt_amount=0);
-  void   CreateUsefulHiRAHistograms(const char *, Long64_t evt_amount=0);
+  //input here customized methods
+  // ...
+  //
 
 private :
   //The Run Info

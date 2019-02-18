@@ -57,5 +57,5 @@ int NWPositionCalibration::LoadCalibration(const char * file_name)
 //____________________________________________________
 double NWPositionCalibration::GetPosition(int num_bar, double tleft, double tright) const
 {
-  return fCalibrationLoaded ? (tleft-tright)*fSpeedLightBar[num_bar]-fOffset[num_bar] : -9999;
+  return fCalibrationLoaded ? ((tleft-tright-fOffset[num_bar])/2.)*fSpeedLightBar[num_bar] : -9999;
 }
