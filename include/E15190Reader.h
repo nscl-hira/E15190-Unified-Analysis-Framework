@@ -196,6 +196,11 @@ public :
   // ...
   //
 
+  //Standalone methods
+  //These methods are used to retrieve event-by-event information in a standalone code
+  int Next();  //Read the next event. Returns 0 if end-of-file.
+  void * GetData(const char * det_name); //returns a pointer with data of a particular detector identified by det_name.
+
 private :
   //The Run Info
   HTRunInfo * fCurrRunInfo;

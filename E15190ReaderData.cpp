@@ -273,3 +273,45 @@ void E15190Reader::BuildCalibratedTree(const char * file_name, Long64_t evt_amou
   // closing output file
   FileOut->Close();
 }
+
+//____________________________________________________
+int E15190Reader::Next()
+{
+  int value = fE15190Reader->Next();
+  if(!fIsDataCalibrated && value) BuildCalibratedEvent();
+  return value;
+}
+
+//____________________________________________________
+void * E15190Reader::GetData(const char * det_name)
+{
+  if(fIsDataCalibrated) {
+    if(strcmp(det_name, "HiRA")==0 && fIsHiRA) {
+      return (void *)fHiRACal->Get();
+    } else if(strcmp(det_name, "NWA")==0 && fIsNWA) {
+      return (void *)fNWACal->Get();
+    } else if(strcmp(det_name, "NWB")==0 && fIsNWB) {
+      return (void *)fNWBCal->Get();
+    } else if(strcmp(det_name, "VW")==0 && fIsVW) {
+      return (void *)fVetoWallCal->Get();
+    } else if(strcmp(det_name, "FA")==0 && fIsFA) {
+      return (void *)fForwardArrayCal->Get();
+    } else if(strcmp(det_name, "uBall")==0 && fIsMB) {
+      return (void *)fMicroballCal->Get();
+    }
+  } else {
+    if(strcmp(det_name, "HiRA")==0 && fIsHiRA) {
+      return (void *)&fHiRACalibratedData;
+    } else if(strcmp(det_name, "NWA")==0 && fIsNWA) {
+      return (void *)&fNWACalibratedData;
+    } else if(strcmp(det_name, "NWB")==0 && fIsNWB) {
+      return (void *)&fNWACalibratedData;
+    } else if(strcmp(det_name, "VW")==0 && fIsVW) {
+      return (void *)&fVetoWallCalibratedData;
+    } else if(strcmp(det_name, "FA")==0 && fIsFA) {
+      return (void *)&fForwardArrayCalibratedData;
+    } else if(strcmp(det_name, "uBall")==0 && fIsMB) {
+      return (void *)&fMicroballCalibratedData;
+    }
+  }
+}
