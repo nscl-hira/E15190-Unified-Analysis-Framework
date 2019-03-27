@@ -44,7 +44,7 @@ public:
   const char * GetRootFilePath() const;           //!
   const char * GetMappedRootFilePath() const;     //!
   const char * GetAnalyzedRootFilePath() const;   //!
-  const char * GetAnalyzedHistogramFilePath() const;   //!  
+  const char * GetAnalyzedHistogramFilePath() const;   //!
   const char * GetDetectorToAnalyze() const;      //!
 
   void Clear();                                   //!
@@ -92,6 +92,7 @@ private:
   std::string * fHiRASiHiLowMatchingFileName;
   std::string * fHiRAGeometryFileName;
   std::string * fHiRAPIDFileName;
+  std::string * fHiRAAbsorbersFileName;
   bool * fIsJunk;
 
   bool fDataMerged;

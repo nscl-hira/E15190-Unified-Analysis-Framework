@@ -54,6 +54,7 @@ fHiRASiCalibrated(false),
 fHiRAGeometryCalibrated(false),
 fHiRAStripBadLoaded(false),
 fHiRASiHiLowMatched(false),
+fHiRAAbsorbersLoaded(false),
 fNWAPositionCalibration(new NWPositionCalibration(NUM_BARS_NWA)),
 fNWBPositionCalibration(new NWPositionCalibration(NUM_BARS_NWB)),
 fNWACosmicRayInfo(new NWCosmicRayManager(NUM_BARS_NWA)),
@@ -80,7 +81,8 @@ fSiCalibrationTools(new HiRASiCalibration(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
 fCsICalibrationModule(new HiRACsICalibrationManager()),
 fHiRAStatus(new HiRADetectorStatus(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
 fHiRAIdentifiationModule(new HiRAIdentification(NUM_TEL,NUM_CSI_TEL)),
-fHiRAPixelizationModule(new HiRAPixelization(NUM_TEL))
+fHiRAPixelizationModule(new HiRAPixelization(NUM_TEL)),
+fHiRAEnergyLossModule(new HiRAEnergyLoss(NUM_TEL))
 {
   //Parsing DataType string to allocate specific detectors
   std::string DetectorsIncluded(DataType);
@@ -198,6 +200,7 @@ void E15190Reader::InitAllCalibrations()
   LoadHiRASiHiLowMatching(fCurrRunInfo->GetHiRASiHiLowMatchingFileName());
   LoadHiRACsICalibration(fCurrRunInfo->GetHiRACsIEnergyCalibrationFileName());
   LoadHiRAIdentification(fCurrRunInfo->GetHiRAPIDFileName());
+  LoadHiRAAbsorbers(fCurrRunInfo->GetHiRAAbsorbersFileName());
 
   fBeam = new TNamed("Beam", fCurrRunInfo->GetBeam());
   fBeamEnergy = new TNamed("Beam Energy (AMeV)", fCurrRunInfo->GetBeamEnergy());
@@ -1039,6 +1042,22 @@ int E15190Reader::LoadHiRAIdentification(const char * file_name)
 }
 
 //____________________________________________________
+int E15190Reader::LoadHiRAAbsorbers(const char * file_name)
+{
+  if(!fIsHiRA) return 0;
+  int NLines=fHiRAEnergyLossModule->LoadConfiguration(file_name);
+  if(NLines>0) {
+    fHiRAAbsorbersLoaded=true;
+    printf("Loaded HiRA Absorbers from file %s\n", file_name);
+    return NLines;
+  } else {
+    fHiRAAbsorbersLoaded=false;
+    printf("Error: Error while loading HiRA Absorbers %s\n", file_name);
+    return -1;
+  }
+}
+
+//____________________________________________________
 bool E15190Reader::IsStripfBad(int telescope, int strip_front) const
 {
   return fHiRAStripBadLoaded ? fHiRAStatus->IsStripfBad(telescope, strip_front) : false;
@@ -1144,6 +1163,12 @@ double E15190Reader::GetSifEMeV(int ch, int telescope, int numstripf) const
 double E15190Reader::GetSibEMeV(int ch, int telescope, int numstripb) const
 {
   return fHiRASiCalibrated ? fSiCalibrationTools->GetEnergy(gRandom->Uniform(ch-0.5,ch+0.5),telescope,numstripb,1) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetHiRAKineticEnergy(int telescope, int Z, int A, double Edet, double theta) const
+{
+  return Z>0&&A>0&&fHiRAAbsorbersLoaded ? fHiRAEnergyLossModule->GetEinc(telescope,Z,A,Edet,theta) : -9999;
 }
 
 //____________________________________________________

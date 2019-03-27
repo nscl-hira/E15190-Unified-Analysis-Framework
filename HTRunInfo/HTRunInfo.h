@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 
-
 #include <HTDAQStackInfo.h>
 /*
 #include <RBHINPUnpacker.h>
@@ -69,6 +68,7 @@ public:
   void SetHiRASiHiLowMatchingFile(const char * file_name) {fHiRASiHiLowMatchingFileName.assign(file_name);}
   void SetHiRAGeometryFile(const char * file_name) {fHiRAGeometryFileName.assign(file_name);}
   void SetHiRAPIDFile(const char * file_name) {fHiRAPIDFileName.assign(file_name);}
+  void SetHiRAAbsorbersFile(const char * file_name) {fHiRAAbsorbersFileName.assign(file_name);}
   void SetJunk(bool is_junk) {fIsJunk=is_junk;}
   const char * GetBeam() const {return fBeam.c_str();}
   const char * GetBeamEnergy() const {return fBeamEnergy.c_str();}
@@ -105,6 +105,7 @@ public:
   const char * GetHiRASiHiLowMatchingFileName() const {return fHiRASiHiLowMatchingFileName.c_str();}
   const char * GetHiRAGeometryFileName() const {return fHiRAGeometryFileName.c_str();}
   const char * GetHiRAPIDFileName() const {return fHiRAPIDFileName.c_str();}
+  const char * GetHiRAAbsorbersFileName() const {return fHiRAAbsorbersFileName.c_str();}
   bool IsJunk() const {return fIsJunk;}
 
   void SetEvtFilePath(const char *);                     //! Set path for evt files of the run
@@ -159,6 +160,7 @@ private:
   std::string  fHiRASiHiLowMatchingFileName;
   std::string  fHiRAGeometryFileName;
   std::string  fHiRAPIDFileName;
+  std::string  fHiRAAbsorbersFileName;
   bool fIsJunk;
 
   std::vector <HTDAQStackInfo *> fStackInfo;             //!

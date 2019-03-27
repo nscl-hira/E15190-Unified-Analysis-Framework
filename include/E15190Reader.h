@@ -58,6 +58,7 @@
 #include <HiRADetectorStatus.h>
 #include <HiRAIdentification.h>
 #include <HiRAPixelization.h>
+#include <HiRAEnergyLoss.h>
 
 #include <shared.h>
 
@@ -77,7 +78,7 @@ To get calibrated data structure for the current event use the method BuildCalib
 class E15190Reader
 {
 public :
-  E15190Reader(TChain *, HTRunInfo *, const char * opt="HiRA-NWA-NWB-VW-FA-uBall-TDC", bool IsDataCalibrated=0);
+  E15190Reader(TChain *, HTRunInfo *, const char * opt="HiRA-NWA-NWB-VW-FA-uBall-TDC-TS", bool IsDataCalibrated=0);
   ~E15190Reader();
 
   void InitAllCalibrations();
@@ -108,6 +109,7 @@ public :
   int LoadHiRASiHiLowMatching(const char *);
   int LoadHiRACsIPulserInfo(const char *);
   int LoadHiRAIdentification(const char *);
+  int LoadHiRAAbsorbers(const char *);
 
   // NW/VW/FA methods
   double GetNWAXcm(int num_bar, double tleft, double tright) const;
@@ -182,6 +184,7 @@ public :
   double GetSibEMeV(int ch, int telescope, int numstripb) const;
   double GetSifHiLowMatchedEMeV(int chHi, int chLow, int telescope, int numstrip) const;
   double GetSibHiLowMatchedEMeV(int chHi, int chLow, int telescope, int numstrip) const;
+  double GetHiRAKineticEnergy(int telescope, int Z, int A, double Edet, double theta=0) const;
 
   // Examples
   void   Loop(const char *, Long64_t evt_amount=0);
@@ -236,9 +239,9 @@ private :
 
   TChain      * fChain;
 
-  TNamed * fBeam;
-  TNamed * fBeamEnergy;
-  TNamed * fTarget;
+  TNamed * fBeam;        //The beam
+  TNamed * fBeamEnergy;  //MeV/u
+  TNamed * fTarget;      //The target
 
   clock_t fStartTime;      // number of clocks since the start of the program initialized if required as the start for time measurement
 
@@ -293,6 +296,7 @@ private :
   bool fHiRAStripBadLoaded;
   bool fHiRASiHiLowMatched;
   bool fHiRAIdentificationLoaded;
+  bool fHiRAAbsorbersLoaded;
 
   NWPositionCalibration * fNWBPositionCalibration;
   NWPositionCalibration * fNWAPositionCalibration;
@@ -323,6 +327,7 @@ private :
   HiRADetectorStatus *fHiRAStatus;
   HiRAIdentification *fHiRAIdentifiationModule;
   HiRAPixelization * fHiRAPixelizationModule;
+  HiRAEnergyLoss * fHiRAEnergyLossModule;
 
   void PrintPercentage(Long64_t, Long64_t) const;
   void PrintPercentageSimple(Long64_t, Long64_t) const;

@@ -52,6 +52,7 @@ HTExperimentInfo::~HTExperimentInfo()
   if(fHiRASiHiLowMatchingFileName) delete [] fHiRASiHiLowMatchingFileName;
   if(fHiRAGeometryFileName) delete [] fHiRAGeometryFileName;
   if(fHiRAPIDFileName) delete [] fHiRAPIDFileName;
+  if(fHiRAAbsorbersFileName) delete [] fHiRAAbsorbersFileName;
   if(fIsJunk) delete [] fIsJunk;
 }
 
@@ -116,6 +117,7 @@ int HTExperimentInfo::InitClass(const char *file_name)
   fHiRASiHiLowMatchingFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fHiRAGeometryFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fHiRAPIDFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fHiRAAbsorbersFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fIsJunk=(bool*)new bool[fLastRun-fFirstRun+1];
 
   // Retrieving all previously stored run titles from database file
@@ -269,6 +271,7 @@ HTRunInfo * HTExperimentInfo::GetRunInfo(int run_num) const
   newRunInfo->SetHiRASiHiLowMatchingFile(	 fHiRASiHiLowMatchingFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetHiRAGeometryFile(		 fHiRAGeometryFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetHiRAPIDFile(		 fHiRAPIDFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetHiRAAbsorbersFile(		 fHiRAAbsorbersFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetJunk(		 fIsJunk[run_num-fFirstRun]);
 
   return newRunInfo;
@@ -475,6 +478,8 @@ void HTExperimentInfo::ParseSetConfigLineRunInfo(const char *line_to_parse, int 
     fHiRAGeometryFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("HIRA_PID")==0) {
     fHiRAPIDFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("HIRA_ABSORBERS")==0) {
+    fHiRAAbsorbersFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("JUNK_RUN")==0) {
     fIsJunk[run_num-fFirstRun]=true;
   }
