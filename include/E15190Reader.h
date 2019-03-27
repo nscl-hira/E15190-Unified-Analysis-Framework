@@ -25,6 +25,7 @@
 
 #include <TDCSpareChannels.h>
 #include <TimestampChannels.h>
+#include <KinematicsModule.h>
 
 #include <HTNeutronWallRootEvent.h>
 #include <HTForwardArrayRootEvent.h>
@@ -213,6 +214,8 @@ private :
   TDCSpareChannels * fTDCAdditionalChannels;
   //Timestamp channels
   TimestampChannels * fTimestampChannels;
+  //Kinematics
+  KinematicsModule * fKinematics;
   //TTreeReaderValue for non-calibrated classes
   TTreeReaderValue<HTNeutronWallData> *fNWA;
   TTreeReaderValue<HTNeutronWallData> *fNWB;

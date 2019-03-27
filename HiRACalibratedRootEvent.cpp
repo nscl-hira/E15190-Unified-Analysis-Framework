@@ -26,9 +26,11 @@ fmulti(0)
   fEnergycsiVolt=     new  Double_t [num_max_particles];
 
   fKinEnergy=	       new  Double_t [num_max_particles];
-  fBeta=	           new  Double_t [num_max_particles];
+  fKinEnergyCMS=	   new  Double_t [num_max_particles];
   fMomentum=	       new  Double_t [num_max_particles];
+  fMomentumCMS=      new  Double_t [num_max_particles];
   fTheta=	           new  Double_t [num_max_particles];
+  fThetaCMS=         new  Double_t [num_max_particles];
   fPhi= 	           new  Double_t [num_max_particles];
   fZ=		             new  Double_t [num_max_particles];
   fA=		             new  Double_t [num_max_particles];
@@ -63,9 +65,11 @@ fmulti(0)
   fEnergycsiVolt=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
 
   fKinEnergy=	       new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fBeta=	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
+  fKinEnergyCMS=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fMomentum=	       new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
+  fMomentumCMS=      new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fTheta=	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
+  fThetaCMS=         new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fPhi= 	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fZ=		             new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fA=		             new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
@@ -99,9 +103,11 @@ HiRACalibratedData::~HiRACalibratedData()
   delete []  fEnergycsiVolt;
 
   delete []  fKinEnergy;
-  delete []  fBeta;
+  delete []  fKinEnergyCMS;
   delete []  fMomentum;
+  delete []  fMomentumCMS;
   delete []  fTheta;
+  delete []  fThetaCMS;
   delete []  fPhi;
   delete []  fZId;
   delete []  fAId;

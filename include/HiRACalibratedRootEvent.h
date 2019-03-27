@@ -31,9 +31,11 @@ public:
   Double_t *fEnergycsiVolt;     //[fmulti]
 
   Double_t *fKinEnergy;        //[fmulti]
-  Double_t *fBeta;             //[fmulti]
+  Double_t *fKinEnergyCMS;        //[fmulti]
   Double_t *fMomentum;         //[fmulti]
+  Double_t *fMomentumCMS;         //[fmulti]
   Double_t *fTheta;            //[fmulti]
+  Double_t *fThetaCMS;            //[fmulti]
   Double_t *fPhi;              //[fmulti]
   Double_t *fZ;                //[fmulti]
   Double_t *fA;                //[fmulti]

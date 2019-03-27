@@ -25,7 +25,7 @@ OBJS += HTRunInfo.$(ObjSuf) HTDAQStackInfo.$(ObjSuf) HTExperimentInfo.$(ObjSuf) 
 OBJS += VWPulseHeightCalibration.$(ObjSuf) VWIdentification.$(ObjSuf) VWGeometry.$(ObjSuf)
 OBJS += TDCSpareChannels.$(ObjSuf) TimestampChannels.$(ObjSuf)
 OBJS += HTTSe15190RootEvent.$(ObjSuf)
-OBJS += HiRAEnergyLoss.$(ObjSuf) EnergyLossModule.$(ObjSuf) nuclear_masses.$(ObjSuf)
+OBJS += HiRAEnergyLoss.$(ObjSuf) EnergyLossModule.$(ObjSuf) nuclear_masses.$(ObjSuf) KinematicsModule.$(ObjSuf)
 OBJS := $(addprefix $(ObjDir), $(OBJS))
 
 RLIBS := -L./$(LibDir)

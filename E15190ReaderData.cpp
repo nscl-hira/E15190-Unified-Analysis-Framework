@@ -181,8 +181,11 @@ void E15190Reader::BuildCalibratedEvent()
       fHiRACalibratedData.fPhi[i]=GetPhiPixel(fHiRACalibratedData.fnumtel[i], fHiRACalibratedData.fnumstripf[i], fHiRACalibratedData.fnumstripb[i]);
       fHiRACalibratedData.fEnergycsiCal[i]=GetCsIEMeV(fHiRACalibratedData.fEnergycsi[i],fHiRACalibratedData.fnumtel[i],fHiRACalibratedData.fnumcsi[i],fHiRACalibratedData.fZId[i],fHiRACalibratedData.fAId[i]); //Energy in the CsI
       fHiRACalibratedData.fKinEnergy[i]=fHiRACalibratedData.fEnergycsiCal[i]>0 ? GetHiRAKineticEnergy(fHiRACalibratedData.fnumtel[i], fHiRACalibratedData.fZId[i], fHiRACalibratedData.fAId[i], fHiRACalibratedData.fEnergySifCal[i]+fHiRACalibratedData.fEnergycsiCal[i], fHiRACalibratedData.fTheta[i]) : -9999; //Total kinetic energy as the sum of DE (front) and E + the energy loss in the absorbers
-      fHiRACalibratedData.fBeta[i]=fHiRACalibratedData.fKinEnergy[i]>0 ? -9999 : -9999;
-      fHiRACalibratedData.fMomentum[i]=fHiRACalibratedData.fKinEnergy[i]>0 ? -9999 : -9999;
+      if(fHiRACalibratedData.fKinEnergy[i]>0) fKinematics->SetParticle(fHiRACalibratedData.fZId[i],fHiRACalibratedData.fAId[i],fHiRACalibratedData.fKinEnergy[i],fHiRACalibratedData.fTheta[i],fHiRACalibratedData.fPhi[i]);
+      fHiRACalibratedData.fKinEnergyCMS[i]=fHiRACalibratedData.fKinEnergy[i]>0 ? fKinematics->GetEkinCMS() : -9999;
+      fHiRACalibratedData.fMomentum[i]=fHiRACalibratedData.fKinEnergy[i]>0 ? fKinematics->GetMomentum() : -9999;
+      fHiRACalibratedData.fMomentumCMS[i]=fHiRACalibratedData.fKinEnergy[i]>0 ? fKinematics->GetMomentumCMS() : -9999;
+      fHiRACalibratedData.fThetaCMS[i]=fHiRACalibratedData.fKinEnergy[i]>0 ? fKinematics->GetThetaCMS() : -9999;
     }
   }
 

@@ -55,6 +55,7 @@ fHiRAGeometryCalibrated(false),
 fHiRAStripBadLoaded(false),
 fHiRASiHiLowMatched(false),
 fHiRAAbsorbersLoaded(false),
+fKinematics(new KinematicsModule()),
 fNWAPositionCalibration(new NWPositionCalibration(NUM_BARS_NWA)),
 fNWBPositionCalibration(new NWPositionCalibration(NUM_BARS_NWB)),
 fNWACosmicRayInfo(new NWCosmicRayManager(NUM_BARS_NWA)),
@@ -205,6 +206,9 @@ void E15190Reader::InitAllCalibrations()
   fBeam = new TNamed("Beam", fCurrRunInfo->GetBeam());
   fBeamEnergy = new TNamed("Beam Energy (AMeV)", fCurrRunInfo->GetBeamEnergy());
   fTarget = new TNamed("Target", fCurrRunInfo->GetTarget());
+
+  fKinematics->SetBeam(fCurrRunInfo->GetBeam(), atof(fCurrRunInfo->GetBeamEnergy()));
+  fKinematics->SetTarget(fCurrRunInfo->GetTarget());
 }
 
 
