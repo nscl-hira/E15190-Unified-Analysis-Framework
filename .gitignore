@@ -14,6 +14,7 @@ exec_CreateUsefulHiRAHistograms
 exec_CreateUsefulHiRAHistograms.cpp
 *.so
 *.o
+*.pcm
 lib/*
 notebooks/*
 niu/*
@@ -22,3 +23,5 @@ slurm/*
 output/*
 .ipynb_checkpoints/*
 __pycache__/*
+*.exe
+exec_*
