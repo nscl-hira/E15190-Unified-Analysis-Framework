@@ -32,15 +32,18 @@ HTExperimentInfo::~HTExperimentInfo()
   if(fNWBGeometryFileName) delete [] fNWBGeometryFileName;
   if(fNWAPSDFlatteningFileName) delete [] fNWAPSDFlatteningFileName;
   if(fNWBPSDFlatteningFileName) delete [] fNWBPSDFlatteningFileName;
+  if(fNWAPSDResidualFileName) delete [] fNWAPSDResidualFileName;
+  if(fNWBPSDResidualFileName) delete [] fNWBPSDResidualFileName;
   if(fNWAPSDCutsFileName) delete [] fNWAPSDCutsFileName;
   if(fNWBPSDCutsFileName) delete [] fNWBPSDCutsFileName;
+  if(fNWASaturationCorrectionFileName) delete [] fNWASaturationCorrectionFileName;
+  if(fNWBSaturationCorrectionFileName) delete [] fNWBSaturationCorrectionFileName;
   if(fFATimeCalibrationFileName) delete [] fFATimeCalibrationFileName;
   if(fFAPulseHeightCorrectionFileName) delete [] fFAPulseHeightCorrectionFileName;
   if(fVWGainMatchingCalibrationFileName) delete [] fVWGainMatchingCalibrationFileName;
-  if(fVWPositionCalibrationFileName) delete [] fVWPositionCalibrationFileName;
-  if(fVWPulseHeightCalibrationFileName) delete [] fVWPulseHeightCalibrationFileName;
   if(fVWDETOFPIDCalibrationFileName) delete [] fVWDETOFPIDCalibrationFileName;
   if(fVWGeometryFileName) delete [] fVWGeometryFileName;
+  if(fVWPositionCalibrationFileName) delete [] fVWPositionCalibrationFileName;
   if(fMBDetectorStatusFileName) delete [] fMBDetectorStatusFileName;
   if(fMBGeometryFileName) delete [] fMBGeometryFileName;
   if(fMBImpactParameterFileName) delete [] fMBImpactParameterFileName;
@@ -52,7 +55,6 @@ HTExperimentInfo::~HTExperimentInfo()
   if(fHiRASiHiLowMatchingFileName) delete [] fHiRASiHiLowMatchingFileName;
   if(fHiRAGeometryFileName) delete [] fHiRAGeometryFileName;
   if(fHiRAPIDFileName) delete [] fHiRAPIDFileName;
-  if(fHiRAAbsorbersFileName) delete [] fHiRAAbsorbersFileName;
   if(fIsJunk) delete [] fIsJunk;
 }
 
@@ -97,15 +99,18 @@ int HTExperimentInfo::InitClass(const char *file_name)
   fNWBGeometryFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fNWAPSDFlatteningFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fNWBPSDFlatteningFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fNWAPSDResidualFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fNWBPSDResidualFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fNWAPSDCutsFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fNWBPSDCutsFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fNWASaturationCorrectionFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fNWBSaturationCorrectionFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fFATimeCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fFAPulseHeightCorrectionFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fVWGainMatchingCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
-  fVWPositionCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
-  fVWPulseHeightCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fVWDETOFPIDCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fVWGeometryFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
+  fVWPositionCalibrationFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fMBDetectorStatusFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fMBGeometryFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fMBImpactParameterFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
@@ -117,7 +122,6 @@ int HTExperimentInfo::InitClass(const char *file_name)
   fHiRASiHiLowMatchingFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fHiRAGeometryFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fHiRAPIDFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
-  fHiRAAbsorbersFileName=(std::string*)new std::string[fLastRun-fFirstRun+1];
   fIsJunk=(bool*)new bool[fLastRun-fFirstRun+1];
 
   // Retrieving all previously stored run titles from database file
@@ -251,15 +255,18 @@ HTRunInfo * HTExperimentInfo::GetRunInfo(int run_num) const
   newRunInfo->SetNWBGeometryCalibrationFile(	 fNWBGeometryFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetNWAPSDFlatteningFile(	 fNWAPSDFlatteningFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetNWBPSDFlatteningFile(	 fNWBPSDFlatteningFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetNWAPSDResidualFile(	 fNWAPSDResidualFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetNWBPSDResidualFile(	 fNWBPSDResidualFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetNWAPSDCutsFile(	 fNWAPSDCutsFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetNWBPSDCutsFile(	 fNWBPSDCutsFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetNWASaturationCorrectionFile(	 fNWASaturationCorrectionFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetNWBSaturationCorrectionFile(	 fNWBSaturationCorrectionFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetFATimeCalibrationFile( 	 fFATimeCalibrationFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetFAPulseHeightCorrectionFile(	 fFAPulseHeightCorrectionFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetVWGainMatchingCalibrationFile(	 fVWGainMatchingCalibrationFileName[run_num-fFirstRun].c_str());
-  newRunInfo->SetVWPositionCalibrationFile(	 fVWPositionCalibrationFileName[run_num-fFirstRun].c_str());
-  newRunInfo->SetVWPulseHeightCalibrationFile(	 fVWPulseHeightCalibrationFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetVWDETOFPIDCalibrationFile(	 fVWDETOFPIDCalibrationFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetVWGeometryFile(	 fVWGeometryFileName[run_num-fFirstRun].c_str());
+  newRunInfo->SetVWPositionCalibrationFile(	 fVWPositionCalibrationFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetMBDetectorStatusFile(		 fMBDetectorStatusFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetMBGeometryFile(		 fMBGeometryFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetMBImpactParameterFile( 	 fMBImpactParameterFileName[run_num-fFirstRun].c_str());
@@ -271,7 +278,6 @@ HTRunInfo * HTExperimentInfo::GetRunInfo(int run_num) const
   newRunInfo->SetHiRASiHiLowMatchingFile(	 fHiRASiHiLowMatchingFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetHiRAGeometryFile(		 fHiRAGeometryFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetHiRAPIDFile(		 fHiRAPIDFileName[run_num-fFirstRun].c_str());
-  newRunInfo->SetHiRAAbsorbersFile(		 fHiRAAbsorbersFileName[run_num-fFirstRun].c_str());
   newRunInfo->SetJunk(		 fIsJunk[run_num-fFirstRun]);
 
   return newRunInfo;
@@ -438,24 +444,30 @@ void HTExperimentInfo::ParseSetConfigLineRunInfo(const char *line_to_parse, int 
     fNWAPSDFlatteningFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("NWB_PSD_FLATTENING")==0) {
     fNWBPSDFlatteningFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("NWA_PSD_RESIDUAL")==0) {
+    fNWAPSDResidualFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("NWB_PSD_RESIDUAL")==0) {
+    fNWBPSDResidualFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("NWA_ISGAMMA_CUTS")==0) {
     fNWAPSDCutsFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("NWB_ISGAMMA_CUTS")==0) {
     fNWBPSDCutsFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("NWA_SATURATION_CORRECTION")==0) {
+    fNWASaturationCorrectionFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("NWB_SATURATION_CORRECTION")==0) {
+    fNWBSaturationCorrectionFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("FA_TIME_CALIBRATION")==0) {
     fFATimeCalibrationFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("FA_PULSE_HEIGHT_CORRECTION")==0) {
     fFAPulseHeightCorrectionFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("VW_GAIN_MATCHING_CALIBRATION")==0) {
     fVWGainMatchingCalibrationFileName[run_num-fFirstRun].assign(NewValue);
-  } else if (ValueToSet.compare("VW_POSITION_CALIBRATION")==0) {
-    fVWPositionCalibrationFileName[run_num-fFirstRun].assign(NewValue);
-  } else if (ValueToSet.compare("VW_PULSEHEIGHT_CALIBRATION")==0) {
-    fVWPulseHeightCalibrationFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("VW_DETOF_PID_CALIBRATION")==0) {
     fVWDETOFPIDCalibrationFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("VW_GEOMETRY")==0) {
     fVWGeometryFileName[run_num-fFirstRun].assign(NewValue);
+  } else if (ValueToSet.compare("VW_POSITION_CALIBRATION")==0) {
+    fVWPositionCalibrationFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("MB_DETECTOR_STATUS")==0) {
     fMBDetectorStatusFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("MB_GEOMETRY")==0) {
@@ -478,8 +490,6 @@ void HTExperimentInfo::ParseSetConfigLineRunInfo(const char *line_to_parse, int 
     fHiRAGeometryFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("HIRA_PID")==0) {
     fHiRAPIDFileName[run_num-fFirstRun].assign(NewValue);
-  } else if (ValueToSet.compare("HIRA_ABSORBERS")==0) {
-    fHiRAAbsorbersFileName[run_num-fFirstRun].assign(NewValue);
   } else if (ValueToSet.compare("JUNK_RUN")==0) {
     fIsJunk[run_num-fFirstRun]=true;
   }

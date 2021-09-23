@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 
+
 #include <HTDAQStackInfo.h>
 /*
 #include <RBHINPUnpacker.h>
@@ -48,15 +49,18 @@ public:
   void SetNWBGeometryCalibrationFile(const char * file_name) {fNWBGeometryFileName.assign(file_name);}
   void SetNWAPSDFlatteningFile(const char * file_name) {fNWAPSDFlatteningFileName.assign(file_name);}
   void SetNWBPSDFlatteningFile(const char * file_name) {fNWBPSDFlatteningFileName.assign(file_name);}
+  void SetNWAPSDResidualFile(const char * file_name) {fNWAPSDResidualFileName.assign(file_name);}
+  void SetNWBPSDResidualFile(const char * file_name) {fNWBPSDResidualFileName.assign(file_name);}
   void SetNWAPSDCutsFile(const char * file_name) {fNWAPSDCutsFileName.assign(file_name);}
   void SetNWBPSDCutsFile(const char * file_name) {fNWBPSDCutsFileName.assign(file_name);}
+  void SetNWASaturationCorrectionFile(const char * file_name) {fNWASaturationCorrectionFileName.assign(file_name);}
+  void SetNWBSaturationCorrectionFile(const char * file_name) {fNWBSaturationCorrectionFileName.assign(file_name);}
   void SetFATimeCalibrationFile(const char * file_name) {fFATimeCalibrationFileName.assign(file_name);}
   void SetFAPulseHeightCorrectionFile(const char * file_name) {fFAPulseHeightCorrectionFileName.assign(file_name);}
   void SetVWGainMatchingCalibrationFile(const char * file_name) {fVWGainMatchingCalibrationFileName.assign(file_name);}
-  void SetVWPulseHeightCalibrationFile(const char * file_name) {fVWPulseHeightCalibrationFileName.assign(file_name);}
-  void SetVWPositionCalibrationFile(const char * file_name) {fVWPositionCalibrationFileName.assign(file_name);}
   void SetVWDETOFPIDCalibrationFile(const char * file_name) {fVWDETOFPIDCalibrationFileName.assign(file_name);}
   void SetVWGeometryFile(const char * file_name) {fVWGeometryFileName.assign(file_name);}
+  void SetVWPositionCalibrationFile(const char * file_name) {fVWPositionCalibrationFileName.assign(file_name);}
   void SetMBDetectorStatusFile(const char * file_name) {fMBDetectorStatusFileName.assign(file_name);}
   void SetMBGeometryFile(const char * file_name) {fMBGeometryFileName.assign(file_name);}
   void SetMBImpactParameterFile(const char * file_name) {fMBImpactParameterFileName.assign(file_name);}
@@ -68,7 +72,6 @@ public:
   void SetHiRASiHiLowMatchingFile(const char * file_name) {fHiRASiHiLowMatchingFileName.assign(file_name);}
   void SetHiRAGeometryFile(const char * file_name) {fHiRAGeometryFileName.assign(file_name);}
   void SetHiRAPIDFile(const char * file_name) {fHiRAPIDFileName.assign(file_name);}
-  void SetHiRAAbsorbersFile(const char * file_name) {fHiRAAbsorbersFileName.assign(file_name);}
   void SetJunk(bool is_junk) {fIsJunk=is_junk;}
   const char * GetBeam() const {return fBeam.c_str();}
   const char * GetBeamEnergy() const {return fBeamEnergy.c_str();}
@@ -85,15 +88,18 @@ public:
   const char * GetNWBGeometryCalibrationFileName() const {return fNWBGeometryFileName.c_str();}
   const char * GetNWAPSDFlatteningFileName() const {return fNWAPSDFlatteningFileName.c_str();}
   const char * GetNWBPSDFlatteningFileName() const {return fNWBPSDFlatteningFileName.c_str();}
+  const char * GetNWAPSDResidualFileName() const {return fNWAPSDResidualFileName.c_str();}
+  const char * GetNWBPSDResidualFileName() const {return fNWBPSDResidualFileName.c_str();}
   const char * GetNWAPSDCutsFileName() const {return fNWAPSDCutsFileName.c_str();}
   const char * GetNWBPSDCutsFileName() const {return fNWBPSDCutsFileName.c_str();}
+  const char * GetNWASaturationCorrectionFileName() const {return fNWASaturationCorrectionFileName.c_str();}
+  const char * GetNWBSaturationCorrectionFileName() const {return fNWBSaturationCorrectionFileName.c_str();}
   const char * GetFATimeCalibrationFileName() const {return fFATimeCalibrationFileName.c_str();}
   const char * GetFAPulseHeightCorrectionFileName() const {return fFAPulseHeightCorrectionFileName.c_str();}
   const char * GetVWGainMatchingCalibrationFileName() const {return fVWGainMatchingCalibrationFileName.c_str();}
-  const char * GetVWPositionCalibrationFileName() const {return fVWPositionCalibrationFileName.c_str();}
-  const char * GetVWPulseHeightCalibrationFileName() const {return fVWPulseHeightCalibrationFileName.c_str();}
   const char * GetVWDETOFPIDCalibrationFileName() const {return fVWDETOFPIDCalibrationFileName.c_str();}
   const char * GetVWGeometryFileName() const {return fVWGeometryFileName.c_str();}
+  const char * GetVWPositionCalibrationFileName() const {return fVWPositionCalibrationFileName.c_str();}
   const char * GerMBDetectorStatusFileName() const {return fMBDetectorStatusFileName.c_str();}
   const char * GetMBGeometryFileName() const {return fMBGeometryFileName.c_str();}
   const char * GetMBImpactParameterFileName() const {return fMBImpactParameterFileName.c_str();}
@@ -105,7 +111,6 @@ public:
   const char * GetHiRASiHiLowMatchingFileName() const {return fHiRASiHiLowMatchingFileName.c_str();}
   const char * GetHiRAGeometryFileName() const {return fHiRAGeometryFileName.c_str();}
   const char * GetHiRAPIDFileName() const {return fHiRAPIDFileName.c_str();}
-  const char * GetHiRAAbsorbersFileName() const {return fHiRAAbsorbersFileName.c_str();}
   bool IsJunk() const {return fIsJunk;}
 
   void SetEvtFilePath(const char *);                     //! Set path for evt files of the run
@@ -140,15 +145,18 @@ private:
   std::string  fNWBGeometryFileName;
   std::string  fNWAPSDFlatteningFileName;
   std::string  fNWBPSDFlatteningFileName;
+  std::string  fNWAPSDResidualFileName;
+  std::string  fNWBPSDResidualFileName;
   std::string  fNWAPSDCutsFileName;
   std::string  fNWBPSDCutsFileName;
+  std::string  fNWASaturationCorrectionFileName;
+  std::string  fNWBSaturationCorrectionFileName;
   std::string  fFATimeCalibrationFileName;
   std::string  fFAPulseHeightCorrectionFileName;
   std::string  fVWGainMatchingCalibrationFileName;
-  std::string  fVWPositionCalibrationFileName;
-  std::string  fVWPulseHeightCalibrationFileName;
   std::string  fVWDETOFPIDCalibrationFileName;
   std::string  fVWGeometryFileName;
+  std::string  fVWPositionCalibrationFileName;
   std::string  fMBDetectorStatusFileName;
   std::string  fMBGeometryFileName;
   std::string  fMBImpactParameterFileName;
@@ -160,7 +168,6 @@ private:
   std::string  fHiRASiHiLowMatchingFileName;
   std::string  fHiRAGeometryFileName;
   std::string  fHiRAPIDFileName;
-  std::string  fHiRAAbsorbersFileName;
   bool fIsJunk;
 
   std::vector <HTDAQStackInfo *> fStackInfo;             //!

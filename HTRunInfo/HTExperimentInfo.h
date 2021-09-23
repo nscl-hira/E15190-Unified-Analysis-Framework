@@ -72,15 +72,18 @@ private:
   std::string * fNWBGeometryFileName;
   std::string * fNWAPSDFlatteningFileName;
   std::string * fNWBPSDFlatteningFileName;
+  std::string * fNWAPSDResidualFileName;
+  std::string * fNWBPSDResidualFileName;
   std::string * fNWAPSDCutsFileName;
   std::string * fNWBPSDCutsFileName;
+  std::string * fNWASaturationCorrectionFileName;
+  std::string * fNWBSaturationCorrectionFileName;
   std::string * fFATimeCalibrationFileName;
   std::string * fFAPulseHeightCorrectionFileName;
   std::string * fVWGainMatchingCalibrationFileName;
-  std::string * fVWPositionCalibrationFileName;
-  std::string * fVWPulseHeightCalibrationFileName;
   std::string * fVWDETOFPIDCalibrationFileName;
   std::string * fVWGeometryFileName;
+  std::string * fVWPositionCalibrationFileName;
   std::string * fMBDetectorStatusFileName;
   std::string * fMBGeometryFileName;
   std::string * fMBImpactParameterFileName;
@@ -92,7 +95,6 @@ private:
   std::string * fHiRASiHiLowMatchingFileName;
   std::string * fHiRAGeometryFileName;
   std::string * fHiRAPIDFileName;
-  std::string * fHiRAAbsorbersFileName;
   bool * fIsJunk;
 
   bool fDataMerged;
