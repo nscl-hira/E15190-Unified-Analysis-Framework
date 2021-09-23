@@ -11,16 +11,9 @@
 #include <HTExperimentInfo.h>
 #include <HTRunInfo.h>
 
-#include <E15190ReaderLogo.h>
-
 int main (int argc, char ** argv)
 {
-  PrintE15190ReaderLogo(); //logo printing
-
-  if(argc<=1) { //no input provided
-    printf("Error: Please provide at least one input!\n");
-    return -1;
-  }
+  if(argc<=1) return -1;
 
   // Building Epxeriment Info class
   HTExperimentInfo * ExpInfo = new HTExperimentInfo();
@@ -45,7 +38,11 @@ int main (int argc, char ** argv)
   for(int cur_run=first_run; cur_run<=last_run; cur_run++)
   {
     dataChain->Reset();
-    int n_files = dataChain->Add(Form("%sCalibratedData_%04d*.root",data_path.c_str(),cur_run));
+    char file_evt[100];
+    sprintf (file_evt,"CalibratedData_%04d*.root",cur_run);
+    std::string file_evt_string(file_evt);
+    std::string path_to_evt_file(data_path+file_evt_string);
+    int n_files = dataChain->Add((data_path+file_evt).c_str());
     printf("%d Root files added to chain for run %d\n", n_files, cur_run);
     if(n_files<=0) continue;
 
@@ -63,7 +60,7 @@ int main (int argc, char ** argv)
     }
 
     //Definition of the output file //////
-    std::string FileOutName(Form("%soutput_%04d.root", ExpInfo->GetAnalyzedHistogramFilePath(), CurrRunInfo->GetRunNumber()));
+    std::string FileOutName(Form("%soutput_%04d.root", ExpInfo->GetAnalyzedRootFilePath(), CurrRunInfo->GetRunNumber()));
 
     //Run the required method(s) /////////
     E15190Analyzer.LoopOnCalibratedData(FileOutName.c_str(), evt_amount);

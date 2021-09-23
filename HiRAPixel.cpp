@@ -166,10 +166,8 @@ int HiRAPixel::multiHit()
       // now load solution
       for (int i=0;i<NestDim;i++) {
 	      fenergy = Front->Order[i].energy;
-        benergy = Back->Order[arrayB[i]].energy;
 
 	      fEnergySif[i] = fenergy;
-        fEnergySib[i] = benergy;
 	      fnumstripf[i] = Front->Order[i].strip;
 	      fnumstripb[i] = Back->Order[arrayB[i]].strip;
         fstripfindex[i] = Front->Order[i].detectorindex;

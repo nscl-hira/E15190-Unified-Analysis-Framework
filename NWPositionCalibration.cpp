@@ -32,8 +32,8 @@ int NWPositionCalibration::LoadCalibration(const char * file_name)
     std::string LineRead;
     std::getline(FileIn, LineRead);
 
-    LineRead.assign(LineRead.substr(0,LineRead.find('*')));
     if(LineRead.empty()) continue;
+    LineRead.assign(LineRead.substr(0,LineRead.find('*')));
     if(LineRead.find_first_not_of(' ') == std::string::npos) continue;
 
     std::istringstream LineStream(LineRead);
@@ -57,5 +57,5 @@ int NWPositionCalibration::LoadCalibration(const char * file_name)
 //____________________________________________________
 double NWPositionCalibration::GetPosition(int num_bar, double tleft, double tright) const
 {
-  return fCalibrationLoaded ? ((tleft-tright-fOffset[num_bar])/2.)*fSpeedLightBar[num_bar] : -9999;
+  return fCalibrationLoaded ? (tleft-tright)*fSpeedLightBar[num_bar]-fOffset[num_bar] : -9999;
 }

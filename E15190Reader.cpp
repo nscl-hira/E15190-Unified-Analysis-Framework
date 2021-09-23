@@ -13,7 +13,6 @@ fNWBarLength(200),
 fNWBarHigh(7.62),
 fNWBarThickness(6.35),
 fIsTDC(false),
-fIsTS(false),
 fIsNWA(false),
 fIsNWB(false),
 fIsFA(false),
@@ -37,13 +36,16 @@ fNWAPulseHeightCalibrated(false),
 fNWBPulseHeightCalibrated(false),
 fNWAPSDFlattened(false),
 fNWBPSDFlattened(false),
+fNWAPSDResidualCalculated(false),
+fNWBPSDResidualCalculated(false),
+fNWASaturationCorrected(false),
+fNWBSaturationCorrected(false),
 fNWAPSDCutsLoaded(false),
 fNWBPSDCutsLoaded(false),
 fFATimeCalibrated(false),
-fVWPulseHeightMatched(false),
+fVWGainMatched(false),
 fVWIdentificationLoaded(false),
 fVWPositionCalibrated(false),
-fVWPulseHeightCalibrated(false),
 fMBGeometryLoaded(false),
 fMBStatusLoaded(false),
 fMBHitConditionLoaded(false),
@@ -54,8 +56,6 @@ fHiRASiCalibrated(false),
 fHiRAGeometryCalibrated(false),
 fHiRAStripBadLoaded(false),
 fHiRASiHiLowMatched(false),
-fHiRAAbsorbersLoaded(false),
-fKinematics(new KinematicsModule()),
 fNWAPositionCalibration(new NWPositionCalibration(NUM_BARS_NWA)),
 fNWBPositionCalibration(new NWPositionCalibration(NUM_BARS_NWB)),
 fNWACosmicRayInfo(new NWCosmicRayManager(NUM_BARS_NWA)),
@@ -81,9 +81,8 @@ fHiRAGeometryTab(new HiRAGeometry(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
 fSiCalibrationTools(new HiRASiCalibration(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
 fCsICalibrationModule(new HiRACsICalibrationManager()),
 fHiRAStatus(new HiRADetectorStatus(NUM_TEL,NUM_STRIP_F,NUM_STRIP_B)),
-fHiRAIdentifiationModule(new HiRAIdentification(NUM_TEL,NUM_CSI_TEL)),
-fHiRAPixelizationModule(new HiRAPixelization(NUM_TEL)),
-fHiRAEnergyLossModule(new HiRAEnergyLoss(NUM_TEL))
+fHiRAIdentifiationModule(new HiRAIdentification()),
+fHiRAPixelizationModule(new HiRAPixelization(NUM_TEL))
 {
   //Parsing DataType string to allocate specific detectors
   std::string DetectorsIncluded(DataType);
@@ -97,7 +96,6 @@ fHiRAEnergyLossModule(new HiRAEnergyLoss(NUM_TEL))
     if(DetectorToAdd.compare("uBall")==0) fIsMB=true;
     if(DetectorToAdd.compare("HiRA")==0) fIsHiRA=true;
     if(DetectorToAdd.compare("TDC")==0) fIsTDC=true;
-    if(DetectorToAdd.compare("TS")==0) fIsTS=true;
   }
 
   if(fChain!=0) {
@@ -124,11 +122,6 @@ fHiRAEnergyLossModule(new HiRAEnergyLoss(NUM_TEL))
       fTDCAdditionalChannels = new TDCSpareChannels();
       fTDCAdditionalChannels->InitFromMapping(fE15190Reader, fCurrRunInfo->GetMappingFile());
     }
-
-    if(fIsTS) {
-      fTimestampChannels = new TimestampChannels();
-      fTimestampChannels->InitFromMapping(fE15190Reader, fCurrRunInfo->GetMappingFile());
-    }
   }
 }
 
@@ -154,14 +147,6 @@ E15190Reader::~E15190Reader()
       if (fIsMB) delete fMicroballCal;
       if (fIsHiRA) delete fHiRACal;
     }
-
-    if(fIsTDC) {
-      delete fTDCAdditionalChannels;
-    }
-
-    if(fIsTS) {
-      delete fTimestampChannels;
-    }
   }
 
   if(fHiRA) delete [] fHiRA;
@@ -175,21 +160,25 @@ void E15190Reader::InitAllCalibrations()
   LoadNWGeometryFiducialPoints(fCurrRunInfo->GetNWBGeometryCalibrationFileName(), "NWB");
   LoadNWGeometryFiducialPoints(fCurrRunInfo->GetNWAGeometryCalibrationFileName(), "NWA");
   LoadNWTimeCalibration(fCurrRunInfo->GetNWBTimeOffsetCalibrationFileName(), "NWB");
+  LoadNWTimeCalibration(fCurrRunInfo->GetNWATimeOffsetCalibrationFileName(), "NWA");//KZ
   LoadNWPulseHeightMatching(fCurrRunInfo->GetNWBGainMatchingCalibrationFileName(), "NWB");
   LoadNWPulseHeightMatching(fCurrRunInfo->GetNWAGainMatchingCalibrationFileName(), "NWA");
   LoadNWPulseHeightCalibration(fCurrRunInfo->GetNWBPulseHeightCalibrationFileName(), "NWB");//KZ
   LoadNWPulseHeightCalibration(fCurrRunInfo->GetNWAPulseHeightCalibrationFileName(), "NWA");//KZ
   LoadNWPSDFlattening(fCurrRunInfo->GetNWBPSDFlatteningFileName(), "NWB");//KZ
   LoadNWPSDFlattening(fCurrRunInfo->GetNWAPSDFlatteningFileName(), "NWA");//KZ
+  LoadNWPSDResidual(fCurrRunInfo->GetNWBPSDResidualFileName(), "NWB");//KZ
+  LoadNWPSDResidual(fCurrRunInfo->GetNWAPSDResidualFileName(), "NWA");//KZ
   LoadNWPSDCuts(fCurrRunInfo->GetNWBPSDCutsFileName(),"NWB"); //KZ
   LoadNWPSDCuts(fCurrRunInfo->GetNWAPSDCutsFileName(),"NWA"); //KZ
+  LoadNWSaturationCorrection(fCurrRunInfo->GetNWASaturationCorrectionFileName(),"NWA"); //KZ
+  LoadNWSaturationCorrection(fCurrRunInfo->GetNWBSaturationCorrectionFileName(),"NWB"); //KZ
   LoadFATimeCalibration(fCurrRunInfo->GetFATimeCalibrationFileName());
   LoadFATimePulseHeightCorrection(fCurrRunInfo->GetFAPulseHeightCorrectionFileName());
   LoadVWGainMatchig(fCurrRunInfo->GetVWGainMatchingCalibrationFileName());
-  LoadVWPulseHeightCalibration(fCurrRunInfo->GetVWPulseHeightCalibrationFileName());
   LoadVWIdentificationCuts(fCurrRunInfo->GetVWDETOFPIDCalibrationFileName());
-  LoadVWPositionCalibration(fCurrRunInfo->GetVWPositionCalibrationFileName());
   LoadVWGeometryFiducialPoints(fCurrRunInfo->GetVWGeometryFileName());
+  LoadNWPositionCalibration(fCurrRunInfo->GetVWPositionCalibrationFileName(), "VW");
   LoadMBGeometry(fCurrRunInfo->GetMBGeometryFileName());
   LoadMBDetectorStatus(fCurrRunInfo->GerMBDetectorStatusFileName());
   LoadMBFastSlowHitCondition(fCurrRunInfo->GetMBHitConditionFileName());
@@ -201,14 +190,10 @@ void E15190Reader::InitAllCalibrations()
   LoadHiRASiHiLowMatching(fCurrRunInfo->GetHiRASiHiLowMatchingFileName());
   LoadHiRACsICalibration(fCurrRunInfo->GetHiRACsIEnergyCalibrationFileName());
   LoadHiRAIdentification(fCurrRunInfo->GetHiRAPIDFileName());
-  LoadHiRAAbsorbers(fCurrRunInfo->GetHiRAAbsorbersFileName());
 
   fBeam = new TNamed("Beam", fCurrRunInfo->GetBeam());
   fBeamEnergy = new TNamed("Beam Energy (AMeV)", fCurrRunInfo->GetBeamEnergy());
   fTarget = new TNamed("Target", fCurrRunInfo->GetTarget());
-
-  fKinematics->SetBeam(fCurrRunInfo->GetBeam(), atof(fCurrRunInfo->GetBeamEnergy()));
-  fKinematics->SetTarget(fCurrRunInfo->GetTarget());
 }
 
 
@@ -223,7 +208,6 @@ int E15190Reader::LoadNWPositionCalibration(const char * file_name, const char *
       printf("Loaded position calibration for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA Position calibration file %s\n", file_name);
     fNWAPositionCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -234,10 +218,20 @@ int E15190Reader::LoadNWPositionCalibration(const char * file_name, const char *
       printf("Loaded position calibration for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB Position calibration file %s\n", file_name);
     fNWBPositionCalibrated=false;
   }
+  if(strcmp(WallToCalibrate,"VW")==0) {
+    if(!fIsVW) return 0;
+    int NLines=fVWPositionCalibration->LoadCalibration(file_name);
+    if(NLines>0) {
+      fVWPositionCalibrated=true;
+      printf("Loaded position calibration for VW %s\n", file_name);
+      return NLines;
+    }
+    fVWPositionCalibrated=false;
+  }
 
+  printf("Error: Error while loading NW Position calibration file %s\n", file_name);
   return -1;
 }
 
@@ -252,7 +246,6 @@ int E15190Reader::LoadNWCosmicRayPosition(const char * file_name, const char * W
       printf("Loaded cosmics calibration for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA cosmic ray positions %s\n", file_name);
     fNWACosmicRayPositionLoaded=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -263,10 +256,10 @@ int E15190Reader::LoadNWCosmicRayPosition(const char * file_name, const char * W
       printf("Loaded cosmics calibration for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB cosmic ray positions %s\n", file_name);
     fNWBCosmicRayPositionLoaded=false;
   }
 
+  printf("Error: Error while loading NW cosmic ray positions %s\n", file_name);
   return -1;
 }
 
@@ -281,7 +274,6 @@ int E15190Reader::LoadNWTimeCalibration(const char * file_name, const char * Wal
       printf("Loaded time calibration for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA time calibration %s\n", file_name);
     fNWATimeCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -292,10 +284,10 @@ int E15190Reader::LoadNWTimeCalibration(const char * file_name, const char * Wal
       printf("Loaded time calibration for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB time calibration %s\n", file_name);
     fNWBTimeCalibrated=false;
   }
 
+  printf("Error: Error while loading NW time calibration %s\n", file_name);
   return -1;
 }
 
@@ -310,7 +302,6 @@ int E15190Reader::LoadNWGeometryFiducialPoints(const char * file_name, const cha
       printf("Loaded geometry fiducial points for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA geometry fiducial points %s\n", file_name);
     fNWAGeometryCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -321,10 +312,10 @@ int E15190Reader::LoadNWGeometryFiducialPoints(const char * file_name, const cha
       printf("Loaded geometry fiducial points for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB geometry fiducial points %s\n", file_name);
     fNWBGeometryCalibrated=false;
   }
 
+  printf("Error: Error while loading NW geometry fiducial points %s\n", file_name);
   return -1;
 }
 
@@ -339,7 +330,6 @@ int E15190Reader::LoadNWPulseHeightMatching(const char * file_name, const char *
       printf("Loaded gain matching for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA gain matching %s\n", file_name);
     fNWAPulseHeightMatched=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -350,13 +340,12 @@ int E15190Reader::LoadNWPulseHeightMatching(const char * file_name, const char *
       printf("Loaded gain matching for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB gain matching %s\n", file_name);
     fNWBPulseHeightMatched=false;
   }
 
+  printf("Error: Error while loading NW gain matching %s\n", file_name);
   return -1;
 }
-
 //K____________________________________________________
 int E15190Reader::LoadNWPulseHeightCalibration(const char * file_name, const char * WallToCalibrate)
 {
@@ -368,7 +357,6 @@ int E15190Reader::LoadNWPulseHeightCalibration(const char * file_name, const cha
       printf("Loaded pulse height calibration for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA pulse height calibration %s\n", file_name);
     fNWAPulseHeightCalibrated=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -379,10 +367,10 @@ int E15190Reader::LoadNWPulseHeightCalibration(const char * file_name, const cha
       printf("Loaded pulse height calibration for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB pulse height calibration %s\n", file_name);
     fNWBPulseHeightCalibrated=false;
   }
 
+  printf("Error: Error while loading NW pulse height calibration %s\n", file_name);
   return -1;
 }
 
@@ -397,7 +385,6 @@ int E15190Reader::LoadNWPSDFlattening(const char * file_name, const char * WallT
       printf("Loaded PSD Flattening info for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA PSD flattening info %s\n", file_name);
     fNWAPSDFlattened=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -408,10 +395,38 @@ int E15190Reader::LoadNWPSDFlattening(const char * file_name, const char * WallT
       printf("Loaded PSD Flattening info for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB PSD flattening info %s\n", file_name);
     fNWBPSDFlattened=false;
   }
 
+  printf("Error: Error while loading NW PSD flattening info %s\n", file_name);
+  return -1;
+}
+
+//K____________________________________________________
+int E15190Reader::LoadNWPSDResidual(const char * file_name, const char * WallToCalibrate)
+{
+  if(strcmp(WallToCalibrate,"NWA")==0) {
+    if(!fIsNWA) return 0;
+    int NLines=fNWAPulseShapeDiscriminationTools->LoadPSDResidual(file_name);
+    if(NLines>0) {
+      fNWAPSDResidualCalculated=true;
+      printf("Loaded PSD Residual info for NWA %s\n", file_name);
+      return NLines;
+    }
+    fNWAPSDFlattened=false;
+  }
+  if(strcmp(WallToCalibrate,"NWB")==0) {
+    if(!fIsNWB) return 0;
+    int NLines=fNWBPulseShapeDiscriminationTools->LoadPSDResidual(file_name);
+    if(NLines>0) {
+      fNWBPSDResidualCalculated=true;
+      printf("Loaded PSD Residual info for NWB %s\n", file_name);
+      return NLines;
+    }
+    fNWBPSDFlattened=false;
+  }
+
+  printf("Error: Error while loading NW PSD Residual info %s\n", file_name);
   return -1;
 }
 
@@ -426,7 +441,6 @@ int E15190Reader::LoadNWPSDCuts(const char * file_name, const char * WallToCalib
       printf("Loaded IsGamma Cuts info for NWA %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWA IsGamma Cuts %s\n", file_name);
     fNWAPSDCutsLoaded=false;
   }
   if(strcmp(WallToCalibrate,"NWB")==0) {
@@ -437,10 +451,37 @@ int E15190Reader::LoadNWPSDCuts(const char * file_name, const char * WallToCalib
       printf("Loaded IsGamma Cuts info for NWB %s\n", file_name);
       return NLines;
     }
-    printf("Error: Error while loading NWB IsGamma Cuts %s\n", file_name);
     fNWBPSDCutsLoaded=false;
   }
 
+  printf("Error: Error while loading NW IsGamma Cuts %s\n", file_name);
+  return -1;
+}
+
+int E15190Reader::LoadNWSaturationCorrection(const char * file_name, const char * WallToCalibrate)
+{
+  if(strcmp(WallToCalibrate,"NWA")==0) {
+    if(!fIsNWA) return 0;
+    int NLines=fNWAPulseHeightCalibrationTools->LoadSaturationCorrection(file_name);
+    if(NLines>0) {
+      fNWASaturationCorrected=true;
+      printf("Loaded pulse height saturation correction for NWA %s\n", file_name);
+      return NLines;
+    }
+    fNWASaturationCorrected=false;
+  }
+  if(strcmp(WallToCalibrate,"NWB")==0) {
+    if(!fIsNWB) return 0;
+    int NLines=fNWBPulseHeightCalibrationTools->LoadSaturationCorrection(file_name);
+    if(NLines>0) {
+      fNWBSaturationCorrected=true;
+      printf("Loaded pulse height saturation correction for NWB %s\n", file_name);
+      return NLines;
+    }
+    fNWBSaturationCorrected=false;
+  }
+
+  printf("Error: Error while loading NW pulse height calibration %s\n", file_name);
   return -1;
 }
 
@@ -482,11 +523,11 @@ int E15190Reader::LoadVWGainMatchig(const char * file_name)
   if(!fIsVW) return 0;
   int NLines=fVWPulseHeightCalibrationTools->LoadGainMatching(file_name);
   if(NLines>0) {
-    fVWPulseHeightMatched=true;
+    fVWGainMatched=true;
     printf("Loaded VW gain matching %s\n", file_name);
     return NLines;
   } else {
-    fVWPulseHeightMatched=false;
+    fVWGainMatched=false;
     printf("Error: Error while loading VW gain matching %s\n", file_name);
     return -1;
   }
@@ -509,22 +550,6 @@ int E15190Reader::LoadVWIdentificationCuts(const char * file_name)
 }
 
 //____________________________________________________
-int E15190Reader::LoadVWPositionCalibration(const char * file_name)
-{
-  if(!fIsVW) return 0;
-  int NLines=fVWPositionCalibration->LoadCalibration(file_name);
-  if(NLines>0) {
-    fVWPositionCalibrated=true;
-    printf("Loaded VW Position Calibration %s\n", file_name);
-    return NLines;
-  } else {
-    fVWPositionCalibrated=false;
-    printf("Error: Error while loading VW Position Calibration %s\n", file_name);
-    return -1;
-  }
-}
-
-//____________________________________________________
 int E15190Reader::LoadVWGeometryFiducialPoints(const char * file_name)
 {
   if(!fIsVW) return 0;
@@ -536,23 +561,6 @@ int E15190Reader::LoadVWGeometryFiducialPoints(const char * file_name)
   } else {
     fVWGeometryLoaded=false;
     printf("Error: Error while loading VW Geometry %s\n", file_name);
-    return -1;
-  }
-}
-
-
-//____________________________________________________
-int E15190Reader::LoadVWPulseHeightCalibration(const char * file_name)
-{
-  if(!fIsVW) return 0;
-  int NLines=fVWPulseHeightCalibrationTools->LoadPulseHeightCalibration(file_name);
-  if(NLines>0) {
-    fVWPulseHeightCalibrated=true;
-    printf("Loaded VW Pulse Height Calibration %s\n", file_name);
-    return NLines;
-  } else {
-    fVWPulseHeightCalibrated=false;
-    printf("Error: Error while loading VW Pulse Height Calibration %s\n", file_name);
     return -1;
   }
 }
@@ -707,6 +715,54 @@ double E15190Reader::GetNWBRightMatched(double ch, int num_bar) const
   return fNWBPulseHeightMatched ? fNWBPulseHeightCalibrationTools->GetRightMatched(ch, num_bar) : -9999;
 }
 
+//____________________________________________________
+double E15190Reader::GetNWALeftSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const
+{
+  return fNWAPulseHeightCalibrated ? fNWAPulseHeightCalibrationTools->GetLeftSaturationCorrected(ch_left, ch_right, Xcm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetNWARightSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const
+{
+  return fNWAPulseHeightCalibrated ? fNWAPulseHeightCalibrationTools->GetRightSaturationCorrected(ch_left, ch_right, Xcm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetNWAfastLeftSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const
+{
+  return fNWAPulseHeightCalibrated ? fNWAPulseHeightCalibrationTools->GetfastLeftSaturationCorrected(fast_ch_left, fast_ch_right, Xcm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetNWAfastRightSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const
+{
+  return fNWAPulseHeightCalibrated ? fNWAPulseHeightCalibrationTools->GetfastRightSaturationCorrected(fast_ch_left, fast_ch_right, Xcm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetNWBLeftSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const
+{
+  return fNWBPulseHeightCalibrated ? fNWBPulseHeightCalibrationTools->GetLeftSaturationCorrected(ch_left, ch_right, Xcm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetNWBRightSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const
+{
+  return fNWBPulseHeightCalibrated ? fNWBPulseHeightCalibrationTools->GetRightSaturationCorrected(ch_left, ch_right, Xcm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetNWBfastLeftSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const
+{
+  return fNWBPulseHeightCalibrated ? fNWBPulseHeightCalibrationTools->GetfastLeftSaturationCorrected(fast_ch_left, fast_ch_right, Xcm, num_bar) : -9999;
+}
+
+//____________________________________________________
+double E15190Reader::GetNWBfastRightSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const
+{
+  return fNWBPulseHeightCalibrated ? fNWBPulseHeightCalibrationTools->GetfastRightSaturationCorrected(fast_ch_left, fast_ch_right, Xcm, num_bar) : -9999;
+}
+
 //KZ____________________________________________________
 double E15190Reader::GetNWAPulseHeightCalibrated(double ch, double Xcm, int num_bar) const
 {
@@ -732,15 +788,51 @@ double E15190Reader::GetNWBPSDFlattened(double ch, double ch_fast, int num_bar) 
 }
 
 //KZ____________________________________________________
-bool E15190Reader::IsNWAGamma(double ch, double ch_fast, int num_bar) const
+double E15190Reader::GetNWALeftPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const
 {
-  return fNWAPSDFlattened&&fNWAPSDCutsLoaded ? fNWAPulseShapeDiscriminationTools->IsGamma(ch, ch_fast, num_bar) : true;
+  return fNWAPSDResidualCalculated ? fNWAPulseShapeDiscriminationTools->GetLeftPSDResidual(left_ch, left_ch_fast, right_ch, right_ch_fast, Xcm, num_bar) : -9999;
 }
 
 //KZ____________________________________________________
-bool E15190Reader::IsNWBGamma(double ch, double ch_fast, int num_bar) const
+double E15190Reader::GetNWARightPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const
 {
-  return fNWBPSDFlattened&&fNWBPSDCutsLoaded ? fNWBPulseShapeDiscriminationTools->IsGamma(ch, ch_fast, num_bar) : true;
+  return fNWAPSDResidualCalculated ? fNWAPulseShapeDiscriminationTools->GetRightPSDResidual(left_ch, left_ch_fast, right_ch, right_ch_fast, Xcm, num_bar) : -9999;
+}
+
+//KZ____________________________________________________
+double E15190Reader::GetNWBLeftPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const
+{
+  return fNWBPSDResidualCalculated ? fNWBPulseShapeDiscriminationTools->GetLeftPSDResidual(left_ch, left_ch_fast, right_ch, right_ch_fast, Xcm, num_bar) : -9999;
+}
+
+//KZ____________________________________________________
+double E15190Reader::GetNWBRightPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const
+{
+  return fNWBPSDResidualCalculated ? fNWBPulseShapeDiscriminationTools->GetRightPSDResidual(left_ch, left_ch_fast, right_ch, right_ch_fast, Xcm, num_bar) : -9999;
+}
+
+//KZ____________________________________________________
+double E15190Reader::GetNWASaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const
+{
+  return fNWASaturationCorrected ? fNWAPulseHeightCalibrationTools->GetSaturationCorrected(ch_left, ch_right, Xcm, num_bar) : -9999;
+}
+
+//KZ____________________________________________________
+double E15190Reader::GetNWBSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const
+{
+  return fNWBSaturationCorrected ? fNWBPulseHeightCalibrationTools->GetSaturationCorrected(ch_left, ch_right, Xcm, num_bar) : -9999;
+}
+
+//KZ____________________________________________________
+bool E15190Reader::IsNWAGamma(double ch, double ch_fast, int num_bar , double ch_left , double ch_right) const
+{
+  return fNWAPSDFlattened&&fNWAPSDCutsLoaded ? fNWAPulseShapeDiscriminationTools->IsGamma(ch, ch_fast, num_bar , ch_left , ch_right) : true;
+}
+
+//KZ____________________________________________________
+bool E15190Reader::IsNWBGamma(double ch, double ch_fast, int num_bar , double ch_left , double ch_right) const
+{
+  return fNWBPSDFlattened&&fNWBPSDCutsLoaded ? fNWBPulseShapeDiscriminationTools->IsGamma(ch, ch_fast, num_bar, ch_left , ch_right) : true;
 }
 
 //____________________________________________________
@@ -752,13 +844,7 @@ double E15190Reader::GetFATimePulseHeightCorrection(int num_det, double pulse_he
 //____________________________________________________
 double E15190Reader::GetVWGeoMeanMatched(double ch, int num_bar) const
 {
-  return fVWPulseHeightMatched ? fVWPulseHeightCalibrationTools->GetGeoMeanMatched(ch, num_bar) : -9999;
-}
-
-//____________________________________________________
-double E15190Reader::GetVWPulseHeightCalibrated(double ch, double Ycm, int num_bar) const
-{
-  return fVWPulseHeightCalibrated ? fVWPulseHeightCalibrationTools->GetPulseHeightCalibrated(ch, Ycm, num_bar) : -9999;
+  return fVWGainMatched ? fVWPulseHeightCalibrationTools->GetGeoMeanMatched(ch, num_bar) : -9999;
 }
 
 //____________________________________________________
@@ -1046,22 +1132,6 @@ int E15190Reader::LoadHiRAIdentification(const char * file_name)
 }
 
 //____________________________________________________
-int E15190Reader::LoadHiRAAbsorbers(const char * file_name)
-{
-  if(!fIsHiRA) return 0;
-  int NLines=fHiRAEnergyLossModule->LoadConfiguration(file_name);
-  if(NLines>0) {
-    fHiRAAbsorbersLoaded=true;
-    printf("Loaded HiRA Absorbers from file %s\n", file_name);
-    return NLines;
-  } else {
-    fHiRAAbsorbersLoaded=false;
-    printf("Error: Error while loading HiRA Absorbers %s\n", file_name);
-    return -1;
-  }
-}
-
-//____________________________________________________
 bool E15190Reader::IsStripfBad(int telescope, int strip_front) const
 {
   return fHiRAStripBadLoaded ? fHiRAStatus->IsStripfBad(telescope, strip_front) : false;
@@ -1146,15 +1216,9 @@ double E15190Reader::GetSibHiLowMatchedEMeV(int chHi, int chLow, int telescope, 
 }
 
 //____________________________________________________
-double E15190Reader::GetCsIEMeV(double ch, int telescope, int numcsi, int Z, int A) const
+double E15190Reader::GetCsIEMeV(int ch, int telescope, int numcsi, int Z, int A) const
 {
   return Z>0&&A>0&&fHiRACsICalibrated&&fHiRACsIPulserCalibrated ? fCsICalibrationModule->GetEnergyValue(gRandom->Uniform(ch-0.5,ch+0.5), telescope, numcsi, Z, A) : -9999;
-}
-
-//____________________________________________________
-double E15190Reader::GetCsIVoltage(double ch, int telescope, int numcsi) const
-{
-  return fHiRACsIPulserCalibrated ? fCsICalibrationModule->GetVoltageValue(gRandom->Uniform(ch-0.5,ch+0.5), telescope, numcsi) : -9999;
 }
 
 //____________________________________________________
@@ -1167,12 +1231,6 @@ double E15190Reader::GetSifEMeV(int ch, int telescope, int numstripf) const
 double E15190Reader::GetSibEMeV(int ch, int telescope, int numstripb) const
 {
   return fHiRASiCalibrated ? fSiCalibrationTools->GetEnergy(gRandom->Uniform(ch-0.5,ch+0.5),telescope,numstripb,1) : -9999;
-}
-
-//____________________________________________________
-double E15190Reader::GetHiRAKineticEnergy(int telescope, int Z, int A, double Edet, double theta) const
-{
-  return Z>0&&A>0&&fHiRAAbsorbersLoaded ? fHiRAEnergyLossModule->GetEinc(telescope,Z,A,Edet,theta) : -9999;
 }
 
 //____________________________________________________

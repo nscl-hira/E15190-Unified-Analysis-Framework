@@ -23,19 +23,14 @@ fmulti(0)
   fEnergySibCal=     new  Double_t [num_max_particles];
   fEnergycsiCal=     new  Double_t [num_max_particles];
   fEnergycsiCalProtons=     new  Double_t [num_max_particles];
-  fEnergycsiVolt=     new  Double_t [num_max_particles];
 
   fKinEnergy=	       new  Double_t [num_max_particles];
-  fKinEnergyCMS=	   new  Double_t [num_max_particles];
+  fBeta=	           new  Double_t [num_max_particles];
   fMomentum=	       new  Double_t [num_max_particles];
-  fMomentumCMS=      new  Double_t [num_max_particles];
   fTheta=	           new  Double_t [num_max_particles];
-  fThetaCMS=         new  Double_t [num_max_particles];
   fPhi= 	           new  Double_t [num_max_particles];
-  fZ=		             new  Double_t [num_max_particles];
-  fA=		             new  Double_t [num_max_particles];
-  fZId=	             new  Int_t    [num_max_particles];
-  fAId=              new  Int_t    [num_max_particles];
+  fZ=		             new  Int_t    [num_max_particles];
+  fA=		             new  Int_t    [num_max_particles];
   fIdCode=	         new  Int_t    [num_max_particles];
 }
 
@@ -62,19 +57,14 @@ fmulti(0)
   fEnergySibCal=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fEnergycsiCal=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fEnergycsiCalProtons=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fEnergycsiVolt=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
 
   fKinEnergy=	       new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fKinEnergyCMS=     new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
+  fBeta=	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fMomentum=	       new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fMomentumCMS=      new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fTheta=	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fThetaCMS=         new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
   fPhi= 	           new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fZ=		             new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fA=		             new  Double_t [12*NUM_MAX_PARTICLES_PER_TEL];
-  fZId=	             new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
-  fAId=              new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
+  fZ=		             new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
+  fA=		             new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
   fIdCode=	         new  Int_t    [12*NUM_MAX_PARTICLES_PER_TEL];
 }
 
@@ -100,17 +90,12 @@ HiRACalibratedData::~HiRACalibratedData()
   delete []  fEnergySibCal;
   delete []  fEnergycsiCal;
   delete []  fEnergycsiCalProtons;
-  delete []  fEnergycsiVolt;
 
   delete []  fKinEnergy;
-  delete []  fKinEnergyCMS;
+  delete []  fBeta;
   delete []  fMomentum;
-  delete []  fMomentumCMS;
   delete []  fTheta;
-  delete []  fThetaCMS;
   delete []  fPhi;
-  delete []  fZId;
-  delete []  fAId;
   delete []  fZ;
   delete []  fA;
   delete []  fIdCode;
@@ -139,8 +124,7 @@ fmulticsi(0)
   fnumcsi=           new  Int_t    [NUM_CSI_TEL];
   fEnergycsi=        new  UShort_t [NUM_CSI_TEL];
   fTimecsi=          new  Double_t [NUM_CSI_TEL];
-  fEnergycsiCalProtons= new  Double_t [NUM_CSI_TEL];
-  fEnergycsiVolt=     new  Double_t [NUM_CSI_TEL];
+  fEnergycsiCal=     new  Double_t [NUM_CSI_TEL];
 }
 
 //________________________________________________
@@ -150,12 +134,10 @@ HiRACalibratedBuffer::~HiRACalibratedBuffer()
   delete []  fEnergySifHi;
   delete []  fEnergySifLo;
   delete []  fTimeSif ;
-
   delete []  fnumstripb;
   delete []  fEnergySibHi;
   delete []  fEnergySibLo;
   delete []  fTimeSib;
-
   delete []  fnumcsi;
   delete []  fEnergycsi;
   delete []  fTimecsi;
@@ -164,6 +146,5 @@ HiRACalibratedBuffer::~HiRACalibratedBuffer()
   delete []  fEnergySibMatched;
   delete []  fEnergySifCal;
   delete []  fEnergySibCal;
-  delete []  fEnergycsiCalProtons;
-  delete []  fEnergycsiVolt;
+  delete []  fEnergycsiCal;
 }

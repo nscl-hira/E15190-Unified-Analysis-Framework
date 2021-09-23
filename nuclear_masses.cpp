@@ -1,14 +1,14 @@
 #include "nuclear_masses.h"
 
 // constructor
-nuclear_masses::nuclear_masses (const char * file_conf_name) :
+nuclear_masses::nuclear_masses (const char * file_conf_name) : 
 electron_mass(0.510998918),
 UMA_MeV(931.494028)
 {
   std::string line;
   int N,Z,A;
   double mass;
-  char element[3];
+  char element[2];
   std::fstream file_in;
   file_in.open(file_conf_name, std::ios::in);
   if (!file_in.is_open()) return;
@@ -21,7 +21,7 @@ UMA_MeV(931.494028)
     element_names[i]=(char**) new char*[300];
     for(int j=0; j<300; j++)
     {
-      element_names[i][j]=(char*)new char[3]();
+      element_names[i][j]=(char*)new char[3](); 
     }
   }
   /*lettura file*/
@@ -31,7 +31,6 @@ UMA_MeV(931.494028)
     std::istringstream buffer (line);
     buffer>>N>>Z>>A>>element>>mass;
     atomic_masses[Z][A]=mass;
-    nuclear_masses_string[Form("%d%s",A,element)]=mass*UMA_MeV-electron_mass*Z;
     strcpy (element_names[Z][A],element);
   }
   return;
@@ -70,20 +69,4 @@ double nuclear_masses::get_mass_Z_A(int Z, int A) const
 double nuclear_masses::get_mass_Z_A_uma(int Z, int A) const
 {
   return atomic_masses[Z][A]-electron_mass*Z/UMA_MeV;
-}
-
-double nuclear_masses::get_mass_Z_A(const char * TheElement) const
-{
-  if(nuclear_masses_string.find(TheElement)!=nuclear_masses_string.end()) {
-    return nuclear_masses_string.at(TheElement);
-  }
-  return 0;
-}
-
-double nuclear_masses::get_mass_Z_A_uma(const char * TheElement) const
-{
-  if(nuclear_masses_string.find(TheElement)!=nuclear_masses_string.end()) {
-    return nuclear_masses_string.at(TheElement)/UMA_MeV;
-  }
-  return 0;
 }

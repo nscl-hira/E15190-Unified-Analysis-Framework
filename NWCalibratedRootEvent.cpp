@@ -12,6 +12,7 @@ fmulti(0)
   fTimeLeft    =new Double_t[num_bars];
   fTimeRight   =new Double_t[num_bars];
   fGeoMean     =new Double_t[num_bars];
+  fGeoMeanSaturationCorrected     =new Double_t[num_bars];
   ffastGeoMean =new Double_t[num_bars];
 
   fTimeMean    =new Double_t[num_bars];
@@ -20,6 +21,12 @@ fmulti(0)
   fMatchedRight=new Double_t[num_bars];
   fMatchedGeoMean=new Double_t[num_bars];
   fFlattenedGeoMean=new Double_t[num_bars];
+  fLeftSaturationCorrected=new Double_t[num_bars];
+  fRightSaturationCorrected=new Double_t[num_bars];
+  ffastLeftSaturationCorrected=new Double_t[num_bars];
+  ffastRightSaturationCorrected=new Double_t[num_bars];
+  fPSDLeft     =new Double_t[num_bars];
+  fPSDRight    =new Double_t[num_bars];
   fTheta       =new Double_t[num_bars];
   fPhi         =new Double_t[num_bars];
   fThetaRan    =new Double_t[num_bars];
@@ -43,6 +50,7 @@ fmulti(0)
   fTimeLeft    =new Double_t[25];
   fTimeRight   =new Double_t[25];
   fGeoMean     =new Double_t[25];
+  fGeoMeanSaturationCorrected     =new Double_t[25];
   ffastGeoMean =new Double_t[25];
 
   fTimeMean    =new Double_t[25];
@@ -51,6 +59,12 @@ fmulti(0)
   fMatchedRight=new Double_t[25];
   fMatchedGeoMean=new Double_t[25];
   fFlattenedGeoMean=new Double_t[25];
+  fLeftSaturationCorrected=new Double_t[25];
+  fRightSaturationCorrected=new Double_t[25];
+  ffastLeftSaturationCorrected=new Double_t[25];
+  ffastRightSaturationCorrected=new Double_t[25];
+  fPSDLeft     =new Double_t[25];
+  fPSDRight     =new Double_t[25];
   fTheta       =new Double_t[25];
   fPhi         =new Double_t[25];
   fThetaRan    =new Double_t[25];
@@ -75,12 +89,19 @@ NeutronWallCalibratedData::~NeutronWallCalibratedData()
   delete [] fGeoMean  ;
   delete [] ffastGeoMean;
 
+  delete [] fGeoMeanSaturationCorrected;
   delete [] fTimeMean    ;
   delete [] fCalGeoMean  ;
   delete [] fMatchedLeft ;
   delete [] fMatchedRight;
   delete [] fMatchedGeoMean;
   delete [] fFlattenedGeoMean;
+  delete [] fLeftSaturationCorrected;
+  delete [] fRightSaturationCorrected;
+  delete [] ffastLeftSaturationCorrected;
+  delete [] ffastRightSaturationCorrected;
+  delete [] fPSDLeft;
+  delete [] fPSDRight;
   delete [] fTheta       ;
   delete [] fPhi         ;
   delete [] fThetaRan    ;
@@ -104,7 +125,6 @@ fmulti(0)
   fGeoMean    =new Double_t[num_bars];
 
   fGeoMeanMatched = new Double_t[num_bars];
-  fCalGeoMean = new Double_t[num_bars];
   fYcm = new Double_t[num_bars];
   fTheta = new Double_t[num_bars];
   fPhi = new Double_t[num_bars];
@@ -126,7 +146,6 @@ fmulti(0)
   fGeoMean    =new Double_t[25];
 
   fGeoMeanMatched = new Double_t[25];
-  fCalGeoMean = new Double_t[25];
   fYcm = new Double_t[25];
   fTheta = new Double_t[25];
   fPhi = new Double_t[25];
@@ -147,7 +166,6 @@ VetoWallCalibratedData::~VetoWallCalibratedData()
   delete [] fGeoMean ;
 
   delete [] fGeoMeanMatched;
-  delete [] fCalGeoMean;
   delete [] fYcm;
   delete [] fTheta;
   delete [] fPhi;
