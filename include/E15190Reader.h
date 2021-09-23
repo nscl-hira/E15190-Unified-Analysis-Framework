@@ -24,8 +24,6 @@
 #include <time.h>
 
 #include <TDCSpareChannels.h>
-#include <TimestampChannels.h>
-#include <KinematicsModule.h>
 
 #include <HTNeutronWallRootEvent.h>
 #include <HTForwardArrayRootEvent.h>
@@ -59,7 +57,6 @@
 #include <HiRADetectorStatus.h>
 #include <HiRAIdentification.h>
 #include <HiRAPixelization.h>
-#include <HiRAEnergyLoss.h>
 
 #include <shared.h>
 
@@ -79,7 +76,7 @@ To get calibrated data structure for the current event use the method BuildCalib
 class E15190Reader
 {
 public :
-  E15190Reader(TChain *, HTRunInfo *, const char * opt="HiRA-NWA-NWB-VW-FA-uBall-TDC-TS", bool IsDataCalibrated=0);
+  E15190Reader(TChain *, HTRunInfo *, const char * opt="HiRA-NWA-NWB-VW-FA-uBall-TDC", bool IsDataCalibrated=0);
   ~E15190Reader();
 
   void InitAllCalibrations();
@@ -91,14 +88,14 @@ public :
   int LoadNWPulseHeightMatching(const char *, const char * WallToCalibrate);
   int LoadNWPulseHeightCalibration(const char *, const char * WallToCalibrate);
   int LoadNWPSDFlattening(const char *, const char * WallToCalibrate);
+  int LoadNWPSDResidual(const char *, const char * WallToCalibrate);
   int LoadNWPSDCuts(const char *, const char * WallToCalibrate);
+  int LoadNWSaturationCorrection(const char *, const char * WallToCalibrate);
   int LoadFATimeCalibration(const char * file_name);
   int LoadFATimePulseHeightCorrection(const char * file_name);
   int LoadVWGainMatchig(const char * file_name);
   int LoadVWIdentificationCuts(const char * file_name);
   int LoadVWGeometryFiducialPoints(const char * file_name);
-  int LoadVWPositionCalibration(const char * file_name);
-  int LoadVWPulseHeightCalibration(const char * file_name);
   int LoadMBGeometry(const char * file_name);
   int LoadMBDetectorStatus(const char * file_name);
   int LoadMBFastSlowHitCondition(const char * file_name);
@@ -110,7 +107,6 @@ public :
   int LoadHiRASiHiLowMatching(const char *);
   int LoadHiRACsIPulserInfo(const char *);
   int LoadHiRAIdentification(const char *);
-  int LoadHiRAAbsorbers(const char *);
 
   // NW/VW/FA methods
   double GetNWAXcm(int num_bar, double tleft, double tright) const;
@@ -137,17 +133,30 @@ public :
   double GetNWARightMatched(double ch, int num_bar) const;
   double GetNWBLeftMatched(double ch, int num_bar) const;
   double GetNWBRightMatched(double ch, int num_bar) const;
+  double GetNWALeftSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const;
+  double GetNWARightSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const;
+  double GetNWBLeftSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const;
+  double GetNWBRightSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const;
+  double GetNWAfastLeftSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const;
+  double GetNWAfastRightSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const;
+  double GetNWBfastLeftSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const;
+  double GetNWBfastRightSaturationCorrected(double fast_ch_left, double fast_ch_right, double Xcm, int num_bar) const;
   double GetNWAPulseHeightCalibrated(double ch, double Xcm, int num_bar) const;
   double GetNWBPulseHeightCalibrated(double ch, double Xcm, int num_bar) const;
   double GetNWAPSDFlattened(double ch, double ch_fast, int num_bar) const;
   double GetNWBPSDFlattened(double ch, double ch_fast, int num_bar) const;
-  bool   IsNWAGamma(double ch, double ch_fast, int numbar) const;
-  bool   IsNWBGamma(double ch, double ch_fast, int numbar) const;
+  double GetNWALeftPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const;
+  double GetNWARightPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const;
+  double GetNWBLeftPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const;
+  double GetNWBRightPSDResidual(double left_ch, double left_ch_fast, double right_ch, double right_ch_fast, double Xcm, int num_bar) const;
+  double GetNWASaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const;
+  double GetNWBSaturationCorrected(double ch_left, double ch_right, double Xcm, int num_bar) const;
+  bool   IsNWAGamma(double ch, double ch_fast, int numbar , double ch_left , double ch_right) const;
+  bool   IsNWBGamma(double ch, double ch_fast, int numbar , double ch_left , double ch_right) const;
   double GetFATimeOffset(int num_det) const;
   double GetFATimePulseHeightCorrection(int num_det, double pulse_height) const;
   double GetVWGeoMeanMatched(double ch, int num_bar) const;
   double GetVWYcm(int num_bar, double tbottom, double ttop) const;
-  double GetVWPulseHeightCalibrated(double ch, double Ycm, int num_bar) const;
   double GetVWTheta(int num_bar, double Ycm) const;
   double GetVWPhi(int num_bar, double Ycm) const;
   double GetVWThetaRan(int num_bar, double Ycm) const;
@@ -177,15 +186,15 @@ public :
   double GetSibIntercept(int telescope, int numstrip) const;
   double GetSifSlope(int telescope, int numstrip) const;
   double GetSibSlope(int telescope, int numstrip) const;
+  double GetCsIIntercept(int telescope, int numcsi) const;
+  double GetCsISlope(int telescope, int numcsi) const;
   double GetSifHiLowMatched(int chHi, int chLow, int telescope, int numstrip) const;
   double GetSibHiLowMatched(int chHi, int chLow, int telescope, int numstrip) const;
-  double GetCsIEMeV(double ch, int telescope, int numcsi, int Z=1, int A=1) const;
-  double GetCsIVoltage(double ch, int telescope, int numcsi) const;
+  double GetCsIEMeV(int ch, int telescope, int numcsi, int Z=1, int A=1) const;
   double GetSifEMeV(int ch, int telescope, int numstripf) const;
   double GetSibEMeV(int ch, int telescope, int numstripb) const;
   double GetSifHiLowMatchedEMeV(int chHi, int chLow, int telescope, int numstrip) const;
   double GetSibHiLowMatchedEMeV(int chHi, int chLow, int telescope, int numstrip) const;
-  double GetHiRAKineticEnergy(int telescope, int Z, int A, double Edet, double theta=0) const;
 
   // Examples
   void   Loop(const char *, Long64_t evt_amount=0);
@@ -196,14 +205,13 @@ public :
   void   BuildCalibratedEvent();
 
   //Customized methods
-  //input here customized methods
-  // ...
-  //
+  // input here customized methods
+  void   CreateUsefulVetoWallHistograms(const char *, Long64_t evt_amount=0);
+  void   CreateUsefulForwardArrayHistograms(const char *, Long64_t evt_amount=0);
+  void   CreateUsefulHiRAHistograms(const char *, Long64_t evt_amount=0);
+  void   BuildCorrelationTree(const char *, Long64_t evt_amount=0);
 
-  //Standalone methods
-  //These methods are used to retrieve event-by-event information in a standalone code
-  int Next();  //Read the next event. Returns 0 if end-of-file.
-  void * GetData(const char * det_name); //returns a pointer with data of a particular detector identified by det_name.
+  // void   testniu();
 
 private :
   //The Run Info
@@ -212,10 +220,6 @@ private :
   TTreeReader * fE15190Reader;
   //TDC Spare channels
   TDCSpareChannels * fTDCAdditionalChannels;
-  //Timestamp channels
-  TimestampChannels * fTimestampChannels;
-  //Kinematics
-  KinematicsModule * fKinematics;
   //TTreeReaderValue for non-calibrated classes
   TTreeReaderValue<HTNeutronWallData> *fNWA;
   TTreeReaderValue<HTNeutronWallData> *fNWB;
@@ -242,9 +246,9 @@ private :
 
   TChain      * fChain;
 
-  TNamed * fBeam;        //The beam
-  TNamed * fBeamEnergy;  //MeV/u
-  TNamed * fTarget;      //The target
+  TNamed * fBeam;
+  TNamed * fBeamEnergy;
+  TNamed * fTarget;
 
   clock_t fStartTime;      // number of clocks since the start of the program initialized if required as the start for time measurement
 
@@ -255,14 +259,13 @@ private :
   double fNWBarHigh;       //cm
   double fNWBarThickness;  //cm
 
-  bool fIsTDC;  //analyzing TDC spare channels
-  bool fIsTS;  //analyzing Timestamp
-  bool fIsNWA;  //analyzing Newutron Wall A
-  bool fIsNWB;  //analyzing Neutron Wall B
-  bool fIsFA;  //analyzing Forward Array
-  bool fIsVW;  //analyzing Veto Wall
-  bool fIsMB;  //analyzing Microball
-  bool fIsHiRA;  //analyzing HiRA
+  bool fIsTDC;
+  bool fIsNWA;
+  bool fIsNWB;
+  bool fIsFA;
+  bool fIsVW;
+  bool fIsMB;
+  bool fIsHiRA;
   bool fIsDataCalibrated;
   bool fNWAPositionCalibrated;
   bool fNWBPositionCalibrated;
@@ -280,14 +283,17 @@ private :
   bool fNWBPulseHeightCalibrated;
   bool fNWAPSDFlattened;
   bool fNWBPSDFlattened;
+  bool fNWAPSDResidualCalculated;
+  bool fNWBPSDResidualCalculated;
   bool fNWAPSDCutsLoaded;
   bool fNWBPSDCutsLoaded;
+  bool fNWASaturationCorrected;
+  bool fNWBSaturationCorrected;
   bool fFATimeCalibrated;
-  bool fVWPulseHeightMatched;
-  bool fVWPositionCalibrated;
+  bool fVWGainMatched;
   bool fVWIdentificationLoaded;
   bool fVWGeometryLoaded;
-  bool fVWPulseHeightCalibrated;
+  bool fVWPositionCalibrated;
   bool fMBGeometryLoaded;
   bool fMBStatusLoaded;
   bool fMBHitConditionLoaded;
@@ -299,7 +305,6 @@ private :
   bool fHiRAStripBadLoaded;
   bool fHiRASiHiLowMatched;
   bool fHiRAIdentificationLoaded;
-  bool fHiRAAbsorbersLoaded;
 
   NWPositionCalibration * fNWBPositionCalibration;
   NWPositionCalibration * fNWAPositionCalibration;
@@ -330,10 +335,10 @@ private :
   HiRADetectorStatus *fHiRAStatus;
   HiRAIdentification *fHiRAIdentifiationModule;
   HiRAPixelization * fHiRAPixelizationModule;
-  HiRAEnergyLoss * fHiRAEnergyLossModule;
 
   void PrintPercentage(Long64_t, Long64_t) const;
   void PrintPercentageSimple(Long64_t, Long64_t) const;
+
 };
 
 #endif

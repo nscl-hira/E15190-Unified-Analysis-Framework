@@ -27,13 +27,13 @@ class HiRAPixel
   double *fEnergySif;
   double *fEnergySib;
   double *fEnergyCsI;
-  double *fEnergy; //this is never used in the current version of the program
+  double *fEnergy;
   int *fstripfindex;
   int *fstripbindex;
   int *fcsiindex;
-  int *fipid; //this is never used in the current version of the program
-  int *fidZ; //this is never used in the current version of the program
-  int *fidA; //this is never used in the current version of the program
+  int *fipid;
+  int *fidZ;
+  int *fidA;
 
   elist * Front;
   elist * Back;
