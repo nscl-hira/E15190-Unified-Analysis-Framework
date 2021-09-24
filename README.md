@@ -1,3 +1,10 @@
+**! ! ! Reviving the repository on 2021-09-23 ! ! !**
+> - Tested on `fishtank`, `flagtail` machine, using `/mnt/misc/sw/x86_64/Debian/10/root/gnu/6.10.08/bin/root` which can be loaded by `module load root/gnu/6.10.08`.
+> - This repository is revived by replacing the [`master`](https://github.com/nscl-hira/E15190-Unified-Analysis-Framework) branch with an identical copy from K. Zhu's local copy/modification/version of the framework on `fishtank`.
+> - This "K. Zhu's version" is frozen as the [`zhu`](https://github.com/nscl-hira/E15190-Unified-Analysis-Framework/tree/zhu) branch; the original version that was last updated in 2019 is frozen as the [`frozen_20190327`](https://github.com/nscl-hira/E15190-Unified-Analysis-Framework/tree/frozen_20190327) branch. Never modify these two branches from now on. Instead, clone a new branch and work on it if you really need to do so.
+> - Not everything on "K. Zhu's version" is more up-to-date. In fact, [`zhu`](https://github.com/nscl-hira/E15190-Unified-Analysis-Framework/tree/zhu) branch is missing *a lot* of scripts, calibration files, etc. especially those that are related to HiRA detector. This is expected because I did *not* attempt to merge [`zhu`](https://github.com/nscl-hira/E15190-Unified-Analysis-Framework/tree/zhu) with the [previous `master`](https://github.com/nscl-hira/E15190-Unified-Analysis-Framework/tree/519af280a82b8085a98b961a253713c252cee242) in any sense, but to simply replace the master branch by whatever K. Zhu was using for neutron analysis.
+> - We, of course, still have many of the "HiRA" versions sitting somewhere on `fishtank`, primarily created by S. Sweany, R. Wang and many others. These versions are not being handled or considered in any way yet.
+
 # E15190-Unified-Analysis-Framework
 A global unified analysis framework to analyze HiRAEVT raw data structures, produce calibrated data with new data structures and analyze calibrated data.
 
