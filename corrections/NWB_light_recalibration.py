@@ -18,22 +18,22 @@ df_old.set_index('bar', inplace=True)
 # https://github.com/nscl-hira/E15190-Unified-Analysis-Framework/blob/4521b84863cf8d56124e30f2e9ef2a0627e11711/NWPulseHeightCalibration.cpp
 def get_light(chn, x, a, b, c, d, e):
     result = chn / (a + b * x + c * x ** 2)
-    result = d + result * (4.916 * e)
+    result = d + result * (4.196 * e)
     return result
 
 def get_adc(light, x, a, b, c, d, e):
-    result = (light - d) / (4.916 * e)
+    result = (light - d) / (4.196 * e)
     result = result * (a + b * x + c * x ** 2)
     return result
 
 # updated the calibration points (MeVee)
 # using Geant4 simulation, with the correct NW bar dimensions
 old_calib_lights = {
-    'pedestal': 0.0, 'AmBe': 4.44,
+    'pedestal': 0.0, 'AmBe': 4.20,
     '90 deg': 11.02, '44.4 deg': 15.6538, '56.3 deg': 20.3242,
 }
 new_calib_lights = {
-    'pedestal': 0.0, 'AmBe': 4.44,
+    'pedestal': 0.0, 'AmBe': 4.20,
     '90 deg': 11.96, '44.4 deg': 17.0536, '56.3 deg': 22.1550,
 }
 
