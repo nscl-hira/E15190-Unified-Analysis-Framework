@@ -8,7 +8,7 @@ set HiRAEVTUNPACKER_SUMMARY_PATH "/mnt/analysis/e15190/HiRAEVTUnpacker_summaries
 set HiRAEVTUNPACKER_ROOT_FILE_PATH "/mnt/analysis/e15190/HiRAEVTUnpacker_rootfiles/"
 set HiRAEVTMAPPER_SUMMARY_PATH "/mnt/analysis/e15190/HiRAEVTMapper_summaries/"
 set HiRAEVTMAPPER_ROOT_FILE_PATH "/mnt/analysis/e15190/HiRAEVTMapper_rootfiles/"
-set ANALYSISFRAMEWORK_ROOT_FILE_PATH "${OUTPUT_DIR}" *** output directory
+set ANALYSISFRAMEWORK_ROOT_FILE_PATH "${OUTPUT_DIR}/" *** output directory
 **********************************************************
 
 ** General experiment setup ******************************
