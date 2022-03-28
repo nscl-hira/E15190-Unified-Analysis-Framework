@@ -109,12 +109,4 @@ To run the code in sbatch mode, e.g. in NSCL ember, use the following command (a
 ````
 $ run_LaunchInEmber exec_TheMainProgram.exe output_1 output_2 ... output_N
 ````
-The script "run_LaunchInEmber" has to be configured prior execution, as explained in the section "Configure the Framework".
-### Calibrated output data
-### Customized Methods
-### How to add new features
-### Extension to future experiments
-### Notes for developers
-### Example 1 Generating calibrated data
-### Example 2 Loop on raw data
-### Example 3 Loop on calibrated data
+
