@@ -1,6 +1,4 @@
 import warnings
-
-from sympy import Line
 warnings.filterwarnings('ignore')
 
 import numpy as np
@@ -9,7 +7,7 @@ from scipy.optimize import curve_fit
 
 # read in the old (current) calibration as df_old
 path = '../calibrations/NWB_PulseHeightCalibration.dat'
-df_old = pd.read_csv(path, sep='\t', skiprows=1, header=None).loc[:, :5]
+df_old = pd.read_csv(path, sep='\s+', skiprows=1, header=None).loc[:, :5]
 df_old.columns = ['bar', 'a', 'b', 'c', 'd', 'e']
 df_old['bar'] = df_old['bar'].str.extract('(\d+)', expand=False).astype(int)
 df_old.set_index('bar', inplace=True)
@@ -133,6 +131,6 @@ try:
     from e15190.utilities import tables
     tables.to_fwf(df_new, 'output.dat')
 except ImportError:
-    df_new.to_csv('output.csv', index=False, sep='\t')
+    df_new.to_csv('output.dat', index=False, sep='\t')
 
 print('Done')
