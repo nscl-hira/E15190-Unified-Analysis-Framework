@@ -5,12 +5,20 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
 
-# read in the old (current) calibration as df_old
-path = '../calibrations/NWB_PulseHeightCalibration.dat'
-df_old = pd.read_csv(path, sep='\s+', skiprows=1, header=None).loc[:, :5]
-df_old.columns = ['bar', 'a', 'b', 'c', 'd', 'e']
-df_old['bar'] = df_old['bar'].str.extract('(\d+)', expand=False).astype(int)
-df_old.set_index('bar', inplace=True)
+def get_old_pulse_height_calibration(
+    url='https://raw.githubusercontent.com/nscl-hira/E15190-Unified-Analysis-Framework/d8e18dc5a962b7b5b9d358ee876ef777ff062917/calibrations/NWB_PulseHeightCalibration.dat',
+):
+    df = pd.read_csv(url, sep='\s+', skiprows=1, header=None).loc[:, :5]
+    df.columns = ['bar', 'a', 'b', 'c', 'd', 'e']
+    df['bar'] = df['bar'].str.extract('(\d+)', expand=False).astype(int)
+    return df.set_index('bar')
+df_old = get_old_pulse_height_calibration()
+
+def get_ambe_compton_edges(
+    url='https://raw.githubusercontent.com/fanurs/data-analysis-e15190-e14030/main/database/neutron_wall/ambe/compton_edges_3072-3073.csv',
+):
+    return pd.read_csv(url).set_index('bar')
+df_ambe = get_ambe_compton_edges()
 
 # functions to fit
 # https://github.com/nscl-hira/E15190-Unified-Analysis-Framework/blob/4521b84863cf8d56124e30f2e9ef2a0627e11711/NWPulseHeightCalibration.cpp
@@ -63,14 +71,18 @@ def routine(bar, ax):
     )
     new_data.index = list(new_calib_lights.keys())
 
+    # the quadratic part (position dependence) would be from new AmBe fit
+    # the linear part (calibration) would be re-fitted with the new data
+    df_ambe_bar = df_ambe.loc[bar]
+    x0 = (df_ambe_bar.p0, df_ambe_bar.p1, df_ambe_bar.p2, df_bar.d, df_bar.e)
     par = curve_fit(
         lambda light, *args: get_adc(light, 0, *args),
         new_data['light'], new_data['adc'],
-        p0=tuple(df_bar),
+        p0=x0,
         bounds=(
-            (df_bar.a - 3, df_bar.b - 0.05, df_bar.c - 0.05, df_bar.d - 0.1, df_bar.e - 0.1),
-            (df_bar.a + 3, df_bar.b + 0.05, df_bar.c + 0.05, df_bar.d + 0.1, df_bar.e + 0.1),
-        )
+            (x0[0] - 1e-2, x0[1] - 1e-3, x0[2] - 1e-5, x0[3] - 0.2, x0[4] - 0.2),
+            (x0[0] + 1e-2, x0[1] + 1e-3, x0[2] + 1e-5, x0[3] + 0.2, x0[4] + 0.2),
+        ),
     )[0]
 
     light = np.linspace(-1, 100, 200) # MeVee
@@ -103,8 +115,6 @@ df_new = []
 for bar in range(1, 25):
     rc = (int((bar - 1) / 6), (bar - 1) % 6)
     ax[rc].set_title(f'bar-{bar:02d}')
-    # ax[rc].set_xlim(-1, 25)
-    # ax[rc].set_ylim(-100, 1600)
     ax[rc].set_xlim(-1, 80)
     ax[rc].set_ylim(-100, 4100)
     ax[rc].set_xticks([0, 20, 40, 60, 80])
@@ -128,7 +138,7 @@ plt.draw()
 df_new = pd.DataFrame(df_new, columns=['a', 'b', 'c', 'd', 'e'])
 df_new.insert(0, '*numbar', [f'NWBbar{bar:02d}' for bar in range(1, 25)])
 try:
-    from e15190.utilities import tables
+    import tables
     tables.to_fwf(df_new, 'output.dat')
 except ImportError:
     df_new.to_csv('output.dat', index=False, sep='\t')
