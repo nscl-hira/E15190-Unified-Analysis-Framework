@@ -22,7 +22,9 @@ pictures/*
 slurm/*
 output/*
 .ipynb_checkpoints/*
-__pycache__/*
+**/__pycache__/**
 *.exe
 exec_*
 *Dict.cpp
+config/HiRAEVT.conf
+**/*.sif
