@@ -235,6 +235,7 @@ double getEk(double tof, double d)
 // }
 
 
+/*
 //____________________________________________________
 void E15190Reader::BuildCorrelationTree(const char * file_name, Long64_t evt_amount)
 {
@@ -571,3 +572,4 @@ void E15190Reader::BuildCorrelationTree(const char * file_name, Long64_t evt_amo
   // closing output file
   FileOut->Close();
 }
+*/

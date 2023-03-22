@@ -10,10 +10,10 @@ fmulti(0)
   fFast    =new Short_t [NUM_DETS_MICROBALL];
   fTime    =new Short_t [NUM_DETS_MICROBALL];
 
-  fTheta   =new Double_t[NUM_DETS_MICROBALL];
-  fPhi     =new Double_t[NUM_DETS_MICROBALL];
-  fThetaRan=new Double_t[NUM_DETS_MICROBALL];
-  fPhiRan  =new Double_t[NUM_DETS_MICROBALL]; 
+  // fTheta   =new Double_t[NUM_DETS_MICROBALL];
+  // fPhi     =new Double_t[NUM_DETS_MICROBALL];
+  // fThetaRan=new Double_t[NUM_DETS_MICROBALL];
+  // fPhiRan  =new Double_t[NUM_DETS_MICROBALL]; 
 }
 
 //________________________________________________
@@ -26,8 +26,8 @@ fmulti(0)
   fFast    =new Short_t [num_dets];
   fTime    =new Short_t [num_dets];
 
-  fTheta   =new Double_t[num_dets];
-  fPhi     =new Double_t[num_dets];
+  // fTheta   =new Double_t[num_dets];
+  // fPhi     =new Double_t[num_dets];
 }
 
 //________________________________________________
@@ -39,6 +39,6 @@ MicroballCalibratedData::~MicroballCalibratedData()
   delete [] fFast   ;
   delete [] fTime   ;
 
-  delete [] fTheta;
-  delete [] fPhi;
+  // delete [] fTheta;
+  // delete [] fPhi;
 }
