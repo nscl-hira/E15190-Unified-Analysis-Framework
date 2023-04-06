@@ -35,11 +35,11 @@ def get_adc(light, x, a, b, c, d, e):
 # updated the calibration points (MeVee)
 # using Geant4 simulation, with the correct NW bar dimensions
 old_calib_lights = {
-    'pedestal': 0.0, 'AmBe': 4.20,
+    'pedestal': 0.0, 'AmBe': 4.196,
     '90 deg': 11.02, '44.4 deg': 15.6538, '56.3 deg': 20.3242,
 }
 new_calib_lights = {
-    'pedestal': 0.0, 'AmBe': 4.20,
+    'pedestal': 0.0, 'AmBe': 4.196,
     '90 deg': 11.96, '44.4 deg': 17.0536, '56.3 deg': 22.1550,
 }
 
@@ -62,7 +62,7 @@ def routine(bar, ax):
     new_data = pd.DataFrame(
         [
             [new_calib_lights['pedestal'], 0.0],
-            [new_calib_lights['AmBe'], old_data.loc['AmBe', 'adc']],
+            [new_calib_lights['AmBe'], df_ambe.loc[bar, 'p0']],
             [new_calib_lights['90 deg'], old_data.loc['90 deg', 'adc']],
             [new_calib_lights['44.4 deg'], old_data.loc['44.4 deg', 'adc']],
             [new_calib_lights['56.3 deg'], old_data.loc['56.3 deg', 'adc']],
@@ -80,8 +80,8 @@ def routine(bar, ax):
         new_data['light'], new_data['adc'],
         p0=x0,
         bounds=(
-            (x0[0] - 1e-2, x0[1] - 1e-3, x0[2] - 1e-5, x0[3] - 0.2, x0[4] - 0.2),
-            (x0[0] + 1e-2, x0[1] + 1e-3, x0[2] + 1e-5, x0[3] + 0.2, x0[4] + 0.2),
+            (x0[0] - 5e-2, x0[1] - 5e-3, x0[2] - 5e-5, x0[3] - 0.25, x0[4] - 0.25),
+            (x0[0] + 5e-2, x0[1] + 5e-3, x0[2] + 5e-5, x0[3] + 0.25, x0[4] + 0.25),
         ),
     )[0]
 
